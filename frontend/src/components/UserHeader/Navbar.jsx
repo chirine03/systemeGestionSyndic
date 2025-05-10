@@ -1,7 +1,7 @@
 import React from "react";
 import { Navbar } from "react-bootstrap";
 import { FaBuilding, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
-import "./Navbar.css";
+import "./NavBar.css";
 
 const NavBar = ({ toggleProfile, toggleSettings, openLogoutModal }) => {
   return (
