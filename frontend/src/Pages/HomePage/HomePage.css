@@ -1,0 +1,86 @@
+.home-container {
+    font-family: Arial;
+    position: relative;
+    height: 100vh;
+    background: url("../../assets/background2.png") no-repeat center center/cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .overlay {
+    background: rgba(21, 21, 21, 0.136);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .navbar {
+    width: 100%;
+    background: #9fafb737;
+    padding: 15px;
+  }
+  
+  .content {
+    width: 100%;
+    display: flex;
+    flex-direction: column; /* Organisation en colonne */
+    align-items: flex-start; /* Alignement du premier bloc à gauche */
+    margin-top: 100px;
+    padding-left: 80px; /* Décalage vers la gauche */
+  }
+  
+  .left-content {
+    text-align: left;
+    max-width: 600px;
+    margin-bottom: 30px; /* Espacement entre les deux blocs */
+  }
+  
+  .center-content {
+    text-align: center;
+    width: 100%;
+  }
+  
+  
+  
+  .title {
+    color: #fffdfd;
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .description, .subtext {
+    font-size: 0.9rem;
+    color: #dcdcdc;
+  }
+
+  .subtext {
+    font-size: 1rem;
+    color: #fffdfd;
+  }
+  
+  .join-button {
+    font-size: 1rem;
+    padding: 9px 20px;
+    border-radius: 25px;
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(#588ba8, #0c3d5d);
+  }
+  
+  .join-button .connect-button :hover {
+    background-color: white;
+    color: black;
+  }
+
+  .connect-button{
+    font-size: 1rem;
+    padding: 7px 18px;
+    border-radius: 25px;
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(#588ba8, #0c3d5d);
+  }
+  

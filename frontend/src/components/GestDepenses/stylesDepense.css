@@ -1,0 +1,81 @@
+/* Container pour l'ensemble de l'application */
+.container-custom {
+  padding: 5px;
+  margin-left: 280px;
+}
+
+/* Formulaire */
+.form-container {
+  max-width: 1600px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f9f9f900;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2,h4 {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 15px;
+  color: #0c3d5d;
+}
+
+/* Style des éléments de formulaire */
+form .mb-3 {
+  margin-bottom: 15px;
+}
+
+form .form-label {
+  font-weight: bold;
+}
+
+form .form-select {
+  width: 90%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Résumé des dépenses */
+
+
+.summary-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+}
+
+/* Container pour les éléments résumé sur une seule ligne */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  flex-wrap: wrap; /* Pour l’adaptabilité sur les petits écrans */
+}
+
+.summary-item {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.summary-text {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.summary-text p {
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.summary-text strong {
+  font-weight: bold;
+}
+
+/* Séparateur entre les sections */
+hr {
+  margin-top: 10px;
+  border-top: 2px solid #ccc;
+}

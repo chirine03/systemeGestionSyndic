@@ -1,0 +1,119 @@
+/* Modal container */
+.auth-modal {
+    position: fixed; /* Ensures modal is positioned relative to the viewport */
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.227); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none; /* Prevent interaction with background content when hidden */
+    animation: fadeIn 0.5s forwards; /* Animation for fade-in */
+    z-index: 1050; /* Make sure the modal is on top of other content */
+  }
+  
+  /* Modal content styling */
+  .modal-content {
+    background: rgb(255, 255, 255);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+    position: relative;
+    transform: scale(0.8);
+    animation: scaleUp 0.3s forwards;
+    z-index: 1060; /* Animation for scaling */
+  }
+  
+  /* Keyframe for fade-in animation */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  /* Keyframe for scaling effect */
+  @keyframes scaleUp {
+    0% {
+      transform: scale(0.8);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  /* Close button styling */
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 15px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    z-index: 1060;
+  }
+  
+  /* Form container for inputs and buttons */
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1060;
+  }
+  
+  /* Input field styling */
+  .form-container input {
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 1060;
+  }
+  
+  /* Submit button styling */
+  .submit-btn {
+    background: #007bff;
+    color: rgb(185, 181, 181);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .submit-btn:hover {
+    background: #00366f;
+  }
+  
+  /* Link for switching between forms */
+  .link, .text-link {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+    z-index: 1060;
+  }
+  
+  /* Optional fade-out animation */
+  .auth-modal.fade-out {
+    opacity: 0;
+    pointer-events: none;
+    animation: fadeOut 0.5s forwards;
+  }
+  
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  

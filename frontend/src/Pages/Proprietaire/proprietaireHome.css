@@ -1,0 +1,46 @@
+.full-page-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+  }
+  
+  .welcome-box {
+    text-align: center;
+    max-width: 800px;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+  }
+  
+  .welcome-box h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+
+  }
+  
+  .welcome-box h2 span {
+    color: #0d6efd;
+  }
+  
+  .btn-paiement {
+    margin-top: 1rem;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  }
+  
+  .btn-paiement:hover {
+    background-color: #0b5ed7;
+  }
+  

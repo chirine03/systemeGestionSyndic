@@ -1,0 +1,47 @@
+.sidebar {
+  width: 255px;
+  height: 100vh;
+  background-color: rgb(243, 243, 243);
+  color: #0c3d5d;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 20px;
+  margin-top: 65px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.sidebar .nav-link {
+  color: #0c3d5d;
+  padding: 12px;
+  transition: 0.3s;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.sidebar .nav-link:hover {
+  background-color: rgb(120, 179, 213);
+  border-radius: 10px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.sub-menu {
+  padding-left: 20px;
+
+}
+
+.sub-menu .nav-link {
+  font-size: 14px;
+  color: #0c3d5d;
+  padding: 8px 10px;
+  transition: 0.3s;
+}
+
+.sub-menu .nav-link:hover {
+  background-color: rgb(180, 220, 240);
+  border-radius: 10px;
+  color: #fff;
+}

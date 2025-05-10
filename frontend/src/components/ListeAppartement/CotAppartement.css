@@ -1,0 +1,110 @@
+/* === Fond sombre et centrage du modal === */
+.ReactModal__Overlay {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
+  /* === Contenu centré et stylé === */
+  .ReactModal__Content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    outline: none;
+    padding: 0;
+    animation: fadeIn 0.3s ease-in-out;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* === Animation d’apparition === */
+  @keyframes fadeIn {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* === Styles internes du contenu === */
+  .custom-modal {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+  }
+  
+  .modal-header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .btn-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: white;
+    opacity: 0.8;
+    cursor: pointer;
+  }
+  
+  .btn-close:hover {
+    opacity: 1;
+  }
+  
+  .modal-body {
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+  }
+  
+  .modal-footer .btn-primary {
+    background-color: #28a745;
+    border: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .modal-footer .btn-primary:hover {
+    background-color: #218838;
+  }
+  
+  .modal-footer .btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .modal-footer .btn-secondary:hover {
+    background-color: #5a6268;
+  }
+  

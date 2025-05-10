@@ -1,0 +1,84 @@
+.message-box.recap-box {
+  background-color: #fff;  /* Couleur de fond blanche */
+  border-radius: 8px;       /* Coins arrondis pour un look plus doux */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombre légère pour un effet flottant subtil */
+  padding: 20px;            /* Espacement interne */
+  font-family: 'Arial', sans-serif; /* Police claire et lisible */
+  color: #333;              /* Couleur de texte sombre pour la lisibilité */
+  line-height: 1.6;         /* Améliore l'espacement entre les lignes de texte */
+  max-width: 700px;         /* Largeur maximale pour mieux gérer l'espace */
+  margin: 30px;             /* Espacement autour du bloc */
+}
+
+.message-box.recap-box h3 {
+  font-size: 24px;
+  color: #0056b3;  /* Une couleur bleue professionnelle pour les titres */
+  margin-bottom: 20px;
+  text-align: center;  /* Centrer le titre */
+}
+
+.message-box.recap-box .syndic-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-top: 15px;
+  color: #666;  /* Gris doux pour le texte secondaire */
+}
+
+.message-box.recap-box .syndic-header i {
+  font-style: italic;
+  margin-left: 8px;
+}
+
+.message-box.recap-box .recap-section {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #555;  /* Gris doux pour le texte général */
+}
+
+.message-box.recap-box .footer-info {
+  margin-top: 30px;
+  font-size: 14px;
+  text-align: center;
+  color: #777;  /* Couleur plus claire pour l'info du bas */
+}
+
+.message-box.recap-box hr {
+  border: 0;
+  border-top: 1px solid #ddd;  /* Ligne horizontale claire */
+  margin: 20px 0;
+}
+
+.message-box.recap-box .no-print {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.message-box.recap-box .btn-imprimer,
+.message-box.recap-box .btn-fermer {
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 16px;
+  border-radius: 5px;  /* Coins arrondis pour les boutons */
+  border: none;
+  cursor: pointer;
+}
+
+.message-box.recap-box .btn-imprimer {
+  background-color: #0056b3; /* Couleur bleue pour le bouton imprimer */
+  color: white;
+}
+
+.message-box.recap-box .btn-fermer {
+  background-color: #ccc; /* Gris pour le bouton fermer */
+  color: white;
+}
+
+.message-box.recap-box .btn-imprimer:hover {
+  background-color: #004080;  /* Couleur plus foncée au survol */
+}
+
+.message-box.recap-box .btn-fermer:hover {
+  background-color: #999;  /* Gris foncé pour le survol */
+}

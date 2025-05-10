@@ -1,0 +1,47 @@
+/* Style de la navbar */
+.navbar-custom {
+  background: linear-gradient(90deg, rgb(120, 179, 213) 0%, #0c3d5d 100%);
+  position: fixed; /* Positionner la navbar en haut de la page */
+  top: 0; /* Positionner en haut */
+  left: 0; /* Aligner à gauche */
+  width: 100%; /* Prendre toute la largeur */
+  z-index: 1050; /* S'assurer que la navbar soit au-dessus des autres éléments */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ajouter une ombre pour un effet de profondeur */
+  padding: 10px 20px; /* Espacement interne */
+  display: flex; /* Utiliser flexbox pour l'alignement */
+}
+
+/* Style du brand dans la navbar */
+.navbar-brand-custom {
+  font-family: 'Arial';
+  font-weight: 700;
+  color: #fff;
+  font-size: 1.6rem;
+  margin-left: 20px; /* Espacement à gauche */
+  text-decoration: none; /* Enlever le soulignement par défaut */
+}
+
+/* Style des icônes de la navbar */
+.navbar-icon {
+  margin-left: 20px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  color: white; /* Couleur par défaut des icônes */
+  font-size: 1.5rem; /* Taille des icônes */
+
+}
+
+/* Changement de couleur au survol */
+.navbar-icon:hover {
+  color: black;
+  transform: scale(1.2); /* Agrandir légèrement l'icône au survol */
+  transition: all 0.4s ease; /* Transition douce pour l'effet de survol */
+}
+
+/* Style par défaut des icônes */
+.navbar-icon-default {
+  color: white;
+  font-size: 1.5rem; /* Taille des icônes */
+  margin-left: 20px; /* Espacement à gauche */
+  cursor: pointer; /* Curseur en main au survol */
+}
