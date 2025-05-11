@@ -133,6 +133,14 @@ export const deleteCotisation = async (idCotisation) => {
   }
 };
 
+export const getCotisationInfos = async (id_cotisation) => {
+  const [rows] = await connection.execute(
+    `SELECT num_appartement, annee, periode FROM cotisation WHERE id_cotisation = ?`,
+    [id_cotisation] 
+  );
+  return rows[0] || null;
+};
+
 export const modifierCotisation = async ({
   idCotisation,
   numeroAppartement,

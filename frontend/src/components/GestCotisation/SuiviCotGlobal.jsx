@@ -86,17 +86,23 @@ const SuiviGlobal = () => {
         </div>
       </div>
 
-      {/* Résultats */}
       {filteredData.length > 0 ? (
         filteredData.map((item, index) => (
-          <p className=" fw-bold text-center" key={index}>
-            En <strong>{item.annee}</strong>, <strong>{item.raison_sociale}</strong> doit <strong>{item.montant_total_annuel_a_payer} DT</strong>, a payé <strong>{item.montant_total_paye} DT</strong>, reste <strong>{item.reste_a_payer} DT</strong>.
-          </p>
-
+          <div key={index} className="summary-container">
+            <h5 className="summary-title">Résumé - Année {item.annee}</h5>
+            <div className="d-flex justify-content-between align-items-center summary-text">
+              <p><strong>{item.raison_sociale}</strong></p>
+              <p><strong className="text-warning">Globale des Cotisations  :</strong> {item.montant_total_annuel_a_payer} DT</p>
+              <p><strong className="text-success">Payé :</strong> {item.montant_total_paye} DT</p>
+              <p><strong className="text-danger">Reste :</strong> {item.reste_a_payer} DT</p>
+            </div>
+            <hr />
+          </div>
         ))
       ) : (
         <p className="text-muted text-center">Veuillez sélectionner une année ou un immeuble pour afficher les résultats.</p>
       )}
+
     </div>
   );
 };

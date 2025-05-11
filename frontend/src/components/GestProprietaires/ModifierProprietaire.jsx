@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 import { modifierProprietaire as modifierProprietaireService } from "../../services/proprietaire/proprietaireService";
 
-const ModifierProprietaire = ({ show, onHide, proprietaire }) => {
+const ModifierProprietaire = ({ show, onHide, proprietaire, onUpdate }) => {
   const [formData, setFormData] = useState({
     nom: "",
     prenom: "",
@@ -83,10 +83,8 @@ const ModifierProprietaire = ({ show, onHide, proprietaire }) => {
     setMessage(response.message);
 
     if (response.success) {
-      setTimeout(() => {
-        setMessage(null);
+      onUpdate(formData);
         onHide();
-      }, 1500);
     }
 
     setIsSubmitting(false);

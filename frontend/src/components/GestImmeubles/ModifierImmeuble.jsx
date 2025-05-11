@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { modifierImmeuble } from "../../services/immeuble/immeubleService"; // ajustez le chemin si besoin
+import ConfirmeModale from "./ConfirmeModale";
 
 const ModifierImmeuble = ({ immeuble, onClose, onUpdated }) => {
   const [formData, setFormData] = useState({ ...immeuble });
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [pendingSubmit, setPendingSubmit] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,14 +55,33 @@ const ModifierImmeuble = ({ immeuble, onClose, onUpdated }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleConfirm = async () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setMessage("");
+    
     if (!validate()) return;
-    const result = await modifierImmeuble(formData);
-    setMessage(result.message);
+    
+    setShowConfirmationModal(true);
+  };
 
-    if (result.true) {
-      onUpdated();
-      onClose();
+  const handleConfirm = async () => {
+    setShowConfirmationModal(false);
+    setPendingSubmit(true);
+
+    try {
+      const result = await modifierImmeuble(formData);
+      setMessage(result.message);
+
+      if (result.success) {
+        onUpdated();
+        // Fermer le modal proprement avec Bootstrap
+      const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
+      modal.hide();
+      }
+    } catch (error) {
+      setMessage("Erreur inattendue lors de la modification de l'immeuble.");
+    } finally {
+      setPendingSubmit(false);
     }
   };
 
@@ -124,12 +146,25 @@ const ModifierImmeuble = ({ immeuble, onClose, onUpdated }) => {
             <button className="btn btn-secondary" data-bs-dismiss="modal" onClick={onClose}>
               Annuler
             </button>
-            <button className="btn btn-primary" onClick={handleConfirm}>
-              Enregistrer
+            <button 
+              className="btn btn-primary" 
+              onClick={handleSubmit}
+              disabled={pendingSubmit}
+            >
+              {pendingSubmit ? "Enregistrement..." : "Enregistrer"}
             </button>
           </div>
         </div>
       </div>
+
+        <ConfirmeModale
+        show={showConfirmationModal}
+        onHide={() => setShowConfirmationModal(false)}
+        onConfirm={handleConfirm}
+        title="Confirmer la modification"
+        message="Êtes-vous sûr de vouloir modifier cet immeuble ?"
+      />
+
     </div>
   );
 };

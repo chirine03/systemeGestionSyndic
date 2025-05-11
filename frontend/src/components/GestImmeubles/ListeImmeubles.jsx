@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   fetchListeImmeubles,
-  SupprimerImmeuble,
 } from "../../services/immeuble/immeubleService";
 import {
   FaBuilding,
@@ -58,8 +57,8 @@ const ListeImmeubles = () => {
   };
 
   const confirmEdit = () => {
-    console.log("Modifier :", selectedImmeuble);
-    setSuccessMessage("Immeuble modifié (simulé)");
+    getImmeubles (); // rafraîchir la liste
+    setSuccessMessage("Immeuble modifié avec succès.");
     setSelectedImmeuble(null);
   };
 
@@ -68,13 +67,8 @@ const ListeImmeubles = () => {
   };
 
   const confirmDelete = async () => {
-    const result = await SupprimerImmeuble(immeubleToDelete);
-    if (result.success) {
-      setSuccessMessage(result.message);
-      getImmeubles(); // rafraîchir la liste
-    } else {
-      alert(result.message);
-    }
+    getImmeubles();
+    setSuccessMessage("Immeuble supprimé avec succès.");
     setImmeubleToDelete(null);
   };
 

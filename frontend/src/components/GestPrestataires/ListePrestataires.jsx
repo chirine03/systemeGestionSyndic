@@ -4,21 +4,23 @@ import { FaPhone, FaFax, FaEnvelope, FaGlobe, FaMapMarkerAlt, FaIdBadge, FaBuild
 import ModifierPrestataire from './ModifierPrestataire';
 import AjouterService from '../GestServices/AjouterService'; // Importation du formulaire de service
 import PrestServicesListe from '../GestServices/PrestServicesListe'; // Importation du composant de services
+import SuppPrestataire from './SuppPrestataire';
+
 
 const ListePrestataire = () => {
   const [prestataires, setPrestataires] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null); // Message de succès
-  const [confirmDelete, setConfirmDelete] = useState(false); // Etat pour gérer la modale de confirmation
-  const [prestataireToDelete, setPrestataireToDelete] = useState(null); // ID du prestataire à supprimer
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [prestataireToDelete, setPrestataireToDelete] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedPrestataire, setSelectedPrestataire] = useState(null);
-  const [showServiceModal, setShowServiceModal] = useState(false); // Ajout du state pour gérer la modale de service
-  const [showServicesModal, setShowServicesModal] = useState(false); // Etat pour la modale des services
-  const [prestataireIdForServices, setPrestataireIdForServices] = useState(null); // ID du prestataire pour les services
+  const [showServiceModal, setShowServiceModal] = useState(false);
+  const [showServicesModal, setShowServicesModal] = useState(false);
+  const [prestataireIdForServices, setPrestataireIdForServices] = useState(null);
 
-  useEffect(() => {
+   useEffect(() => {
     const fetchPrestataires = async () => {
       try {
         const result = await getListePrestataire();
@@ -37,27 +39,19 @@ const ListePrestataire = () => {
     fetchPrestataires();
   }, []);
 
-  const handleDelete = async (id_prestataire) => {
+  const handleDeleteClick = (id_prestataire) => {
     setPrestataireToDelete(id_prestataire);
-    setConfirmDelete(true); // Ouvre la modale de confirmation
+    setShowDeleteModal(true);
   };
 
-  const confirmDeleteHandler = async () => {
-    if (prestataireToDelete) {
-      const result = await deletePrestataire(prestataireToDelete);
-      if (result.success) {
-        // Mise à jour de la liste des prestataires après suppression
-        setPrestataires((prev) => prev.filter((prestataire) => prestataire.id_prestataire !== prestataireToDelete));
-        setSuccessMessage(result.message); // Affiche le message de succès
-      } else {
-        setError(result.message); // Affiche le message d'erreur
-      }
-      setConfirmDelete(false); // Ferme la modale de confirmation
-    }
-  };
-
-  const cancelDeleteHandler = () => {
-    setConfirmDelete(false); // Ferme la modale sans supprimer
+  const handleDeleteSuccess = (message) => {
+    setPrestataires(prev => prev.filter(p => p.id_prestataire !== prestataireToDelete));
+    setTimeout(() => {
+      setSuccessMessage(message);
+      setShowDeleteModal(false);
+      setSelectedPrestataire(null)
+    }, 1500); // Masquer le message après 3 secondes
+    
   };
 
   const handleEdit = (prestataire) => {
@@ -66,8 +60,10 @@ const ListePrestataire = () => {
   };
   
   const handleCloseEditModal = () => {
+    setTimeout(() => {
     setShowEditModal(false);
     setSelectedPrestataire(null);
+    }, 1500);
   };
   
   const handleSaveEdit = (updatedPrestataire) => {
@@ -172,9 +168,9 @@ const ListePrestataire = () => {
                       <FaTools  className="me-1" /> Services
                     </button>
                     <button 
-                        className="btn btn-outline-danger btn-sm rounded-pill"
-                        onClick={() => handleDelete(prestataire.id_prestataire)}>
-                        <FaTrash className="me-1" /> Supprimer
+                      className="btn btn-outline-danger btn-sm rounded-pill"
+                      onClick={() => handleDeleteClick(prestataire.id_prestataire)}>
+                      <FaTrash className="me-1" /> Supprimer
                     </button>
                   </div>
                 </div>
@@ -183,31 +179,14 @@ const ListePrestataire = () => {
           ))}
         </div>
       )}
+      
 
-      {/* Modale de confirmation */}
-      {confirmDelete && (
-        <div className="modal show" style={{ display: 'block' }} tabIndex="-1">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Confirmation de suppression</h5>
-                <button type="button" className="btn-close" onClick={cancelDeleteHandler}></button>
-              </div>
-              <div className="modal-body">
-                <p>Êtes-vous sûr de vouloir supprimer ce prestataire ?</p>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={cancelDeleteHandler}>
-                  Annuler
-                </button>
-                <button type="button" className="btn btn-danger" onClick={confirmDeleteHandler}>
-                  Confirmer
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+       <SuppPrestataire
+        show={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        prestataireId={prestataireToDelete}
+        onDeleteSuccess={handleDeleteSuccess}
+      />
 
       {/* Modale des services du prestataire */}
       {showServicesModal && (

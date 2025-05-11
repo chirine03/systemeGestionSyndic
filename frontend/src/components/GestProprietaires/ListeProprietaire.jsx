@@ -14,19 +14,20 @@ const ListeProprietaire = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [proprioToModifier, setProprioToModifier] = useState(null);
 
-  useEffect(() => {
-    const chargerProprietaires = async () => {
-      const result = await fetchListeProprietaires();
-      if (result.success) {
-        setProprietaires(result.data);
-      } else {
-        setErreur(result.message);
-      }
-      setLoading(false);
-    };
+  const chargerProprietaires = async () => {
+  setLoading(true);
+  const result = await fetchListeProprietaires();
+  if (result.success) {
+    setProprietaires(result.data);
+  } else {
+    setErreur(result.message);
+  }
+  setLoading(false);
+};
 
-    chargerProprietaires();
-  }, []);
+useEffect(() => {
+  chargerProprietaires();
+}, []);
 
   const handleModifier = (proprietaire) => {
     setProprioToModifier(proprietaire);
@@ -35,27 +36,6 @@ const ListeProprietaire = () => {
   const handleSupprimer = (proprietaire) => {
     setProprioToDelete(proprietaire);
     setShowConfirm(true);
-  };
-
-  const confirmerSuppression = async () => {
-    if (!proprioToDelete || !proprioToDelete.id_personne) {
-      toast.error("ID du propriétaire introuvable.");
-      return;
-    }
-
-    const result = await supprimerProprietaire(proprioToDelete.id_personne);
-
-    if (result.success) {
-      setProprietaires((prev) =>
-        prev.filter((p) => p.id_personne !== proprioToDelete.id_personne)
-      );
-      toast.success("Propriétaire supprimé avec succès.");
-    } else {
-      toast.error("Erreur : " + result.message);
-    }
-
-    setShowConfirm(false);
-    setProprioToDelete(null);
   };
 
   const proprietairesFiltres = proprietaires.filter((p) => {
@@ -163,6 +143,7 @@ const ListeProprietaire = () => {
         show={!!proprioToModifier}
         onHide={() => setProprioToModifier(null)}
         proprietaire={proprioToModifier}
+        onUpdate ={chargerProprietaires}
       />
     </div>
   );

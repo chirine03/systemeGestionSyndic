@@ -1,12 +1,12 @@
 /* AjouterService.css */
 
 .custom-modal-width {
-    max-width: 800px;
+    max-width: 900px;
   }
   
   .liste-width{
     max-width: 200% !important;
-    width: 165% !important;
+    width: 200% !important;
   }
   .modal-title {
     font-weight: bold;

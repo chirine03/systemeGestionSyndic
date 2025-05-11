@@ -77,23 +77,33 @@ const SuiviCotisation = () => {
       <SuiviGlobal />
       <Row className="align-items-center g-3 mb-4 justify-content-center">
         <Col md={3}>
-          <Form.Control
-            type="number"
-            placeholder="🔎 Filtrer par année (ex: 2025)"
+          <Form.Select
             value={anneeFilter}
             onChange={(e) => setAnneeFilter(e.target.value)}
             className="rounded-pill shadow-sm"
-          />
+          >
+            <option value="">📅 Filtrer par année</option>
+            {[...new Set(data.map(item => item.annee))].sort().map((annee, index) => (
+              <option key={index} value={annee}>{annee}</option>
+            ))}
+          </Form.Select>
         </Col>
+
         <Col md={3}>
-          <Form.Control
-            type="number"
-            placeholder="📅 Filtrer par trimestre (1 à 4)"
+          <Form.Select
             value={periodeFilter}
             onChange={(e) => setPeriodeFilter(e.target.value)}
             className="rounded-pill shadow-sm"
-          />
+          >
+            <option value="">🗓️ Filtrer par trimestre</option>
+            {[1, 2, 3, 4].map((trimestre) => (
+              <option key={trimestre} value={trimestre}>
+                 {trimestre} Trimestre
+              </option>
+            ))}
+          </Form.Select>
         </Col>
+
         <Col md="auto">
           <Button
             variant={sortDateAsc ? "success" : "danger"}
@@ -120,7 +130,7 @@ const SuiviCotisation = () => {
           </Alert>) : 
           (
             <div className="table-responsive shadow-sm ">
-              <Table bordered hover responsive="md" className="align-middle text-center">
+              <Table id="tableCotisations" bordered hover responsive="md" className="align-middle text-center">
                 <thead className="table-primary">
                   <tr>
                     <th>Num Appartement</th>

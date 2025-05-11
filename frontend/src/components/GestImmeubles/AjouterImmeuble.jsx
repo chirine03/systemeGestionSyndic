@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { ajouterImmeuble } from '../../services/immeuble/immeubleService'; // Assurez-vous que le nom du service est correct
+import { ajouterImmeuble } from '../../services/immeuble/immeubleService'; 
+import { Modal, Button } from 'react-bootstrap'; // Import des composants Modal et Button de react-bootstrap
+import ConfirmeModale from './ConfirmeModale';
 
 const AjouterImmeuble = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +18,7 @@ const AjouterImmeuble = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [pendingSubmit, setPendingSubmit] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false); // État pour gérer l'affichage du modal
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,8 +86,16 @@ const AjouterImmeuble = () => {
       return;
     }
 
+    setShowConfirmationModal(true);
+    setPendingSubmit(false);
+  };
+
+  const handleConfirmSubmit = async () => {
+    setShowConfirmationModal(false);
+    setPendingSubmit(true);
+
     try {
-      const result = await ajouterImmeuble(formData);  // Utilisez le bon nom de la fonction dans votre service
+      const result = await ajouterImmeuble(formData);
       setPendingSubmit(false);
 
       if (result.success) {
@@ -105,6 +116,10 @@ const AjouterImmeuble = () => {
       setPendingSubmit(false);
       setErrorMessage("Erreur inattendue lors de l'ajout de l'immeuble.");
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowConfirmationModal(false);
   };
 
   return (
@@ -189,13 +204,20 @@ const AjouterImmeuble = () => {
             {errors.description && <div className="invalid-feedback">{errors.description}</div>}
           </div>
         </div>
-
         <div className="text-center">
           <button type="submit" className="btn btn-ajouter rounded-pill px-4" disabled={pendingSubmit}>
             {pendingSubmit ? 'Ajout en cours...' : 'Ajouter'}
           </button>
         </div>
       </form>
+
+       <ConfirmeModale
+        show={showConfirmationModal}
+        onHide={() => setShowConfirmationModal(false)}
+        onConfirm={handleConfirmSubmit}
+        title="Confirmer l'ajout"
+        message="Êtes-vous sûr de vouloir ajouter cet immeuble ?"
+      />
     </div>
   );
 };
