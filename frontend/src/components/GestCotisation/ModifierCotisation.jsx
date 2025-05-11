@@ -130,7 +130,6 @@ const ModifierCotisation = ({ show, handleClose, cotisation, onCotisationUpdated
               value={formData.periode}
               onChange={handleChange}
               isInvalid={!!errors.periode}
-              disabled
             >
               <option value="">Choisir la période</option>
               <option value="1">1 Trimestre</option>
