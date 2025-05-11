@@ -10,7 +10,7 @@ export const ajouterProprietaire = async (req, res) => {
         return res.json({ success: false, message: "CIN ou téléphone déjà utilisé." });
       }
   
-      const id_personne = await addProprietaire({ nom, prenom, adresse, telephone, cin, date_nais });
+      await addProprietaire({ nom, prenom, adresse, telephone, cin, date_nais });
   
       return res.json({ success: true, message: "Propriétaire ajouté."});
     } catch (error) {

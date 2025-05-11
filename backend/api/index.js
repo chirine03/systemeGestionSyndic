@@ -20,7 +20,7 @@ import depenseRoutes from '../routes/depense/depenseRoutes.js';
 import immeubleRoutes from '../routes/immeuble/immeubleRoutes.js'; 
 import proprietaireRoutes from '../routes/proprietaire/proprietaireRoutes.js';
 import appartementRoutes from '../routes/appartement/appartementRoutes.js';
-
+import personnelRoutes from '../routes/personnel/personnelRoutes.js';
 
 const app = express();
 
@@ -42,6 +42,7 @@ app.use('/api/depense', depenseRoutes);
 app.use('/api/immeuble', immeubleRoutes);
 app.use('/api/proprietaire', proprietaireRoutes);
 app.use('/api/appartement', appartementRoutes);
+app.use('/api/personnel', personnelRoutes);
 
 
 export const handler = serverless(app);

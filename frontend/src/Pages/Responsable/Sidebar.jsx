@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { FaMoneyBill, FaList, FaPlus, FaCalendarCheck, FaCoins, FaUsers, FaHandshake, FaWallet, FaBuilding, FaHome, FaUserCog } from "react-icons/fa";
+import { FaMoneyBill, FaList, FaPlus, FaCalendarCheck, FaCoins, FaUsers, FaHandshake, FaWallet , FaHome, FaUserCog } from "react-icons/fa";
 import { RiCommunityFill } from "react-icons/ri";
 import { IoPeople } from "react-icons/io5";
 import {MdManageAccounts} from "react-icons/md";
+import { BsPersonWorkspace } from "react-icons/bs";
 
 import { MdOutlineDashboard } from "react-icons/md";
 import "./Sidebar.css";
@@ -14,6 +15,7 @@ const Sidebar = ({ setContent }) => {
   const [showDepense, setShowDepense] = useState(false);
   const [showImmeuble, setShowImmeuble] = useState(false);
   const [showProprietaire, setShowProprietaire] = useState(false);
+  const [showPersonnel, setShowPersonnel] = useState(false);
   const [showAppartement, setShowAppartement,] = useState(false);
 
 
@@ -60,6 +62,21 @@ const Sidebar = ({ setContent }) => {
               <FaPlus className="me-2" /> Ajouter Propriétaire
             </li>
             <li className="nav-link" onClick={() => setContent("ListeProprietaire")}>
+              <FaList className="me-2" /> Liste des Propriétaires
+            </li>
+          </ul>
+        )}
+
+
+        <li className="nav-link" onClick={() => setShowPersonnel(!showPersonnel)}>
+          <FaUserCog  className="me-2" /> Gérer Personnel
+        </li>
+        {showPersonnel && (
+          <ul className="sub-menu">
+            <li className="nav-link" onClick={() => setContent("AjouterPersonnel")}>
+              <FaPlus className="me-2" /> Ajouter Personnel
+            </li>
+            <li className="nav-link" onClick={() => setContent("ListePersonnel")}>
               <FaList className="me-2" /> Liste des Propriétaires
             </li>
           </ul>
@@ -131,16 +148,8 @@ const Sidebar = ({ setContent }) => {
         )}
 
         <li className="nav-link" onClick={() => setContent("ListeComptes")}>
-          <MdManageAccounts className="me-2" />Suivi Comptes Inscrit
+          <BsPersonWorkspace className="me-2" />Suivi Comptes Inscrit
         </li>
-
-        {/*<li className="nav-link" onClick={() => setContent("ListeComptes")}>
-          <FaUsers className="me-2" />Gérer Propriétaires
-        </li>
-
-        <li className="nav-link" onClick={() => setContent("ListeComptes")}>
-          <FaUserCog className="me-2" />Gérer Personnels
-        </li>*/}
       </ul>
     </div>
   );

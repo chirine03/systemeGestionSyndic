@@ -19,7 +19,9 @@ import AjouterProprietaire from "../../components/GestProprietaires/AjouterPropr
 import ListeProprietaire from "../../components/GestProprietaires/ListeProprietaire";7
 import ListeAppartement from "../../components/GestAppartement/ListeAppartement";
 import AjouterAppartement from "../../components/GestAppartement/AjouterAppartement";
-import SuiviDepense from "../../components/GestDepenses/SuiviDepense"; // Import the new component
+import SuiviDepense from "../../components/GestDepenses/SuiviDepense";
+import AjouterPersonnel from "../../components/GestPersonnel/AjouterPersonnel";
+import ListePersonnel from "../../components/GestPersonnel/ListePersonnel";
 
 const ResponsableHome = () => {
   const location = useLocation();
@@ -54,6 +56,8 @@ const ResponsableHome = () => {
         {content === "ListeProprietaire" && <ListeProprietaire />}
         {content === "ListeAppartement" && <ListeAppartement />}
         {content === "AjouterAppartement" && <AjouterAppartement />}
+        {content === "AjouterPersonnel" && <AjouterPersonnel />}
+        {content === "ListePersonnel" && <ListePersonnel />}
         
         
       </div>
