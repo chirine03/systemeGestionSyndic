@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { findUserByEmail } from '../models/loginModel.js';
+import { checkUserExiste,findUserByEmail, checkCinExists, createAccount, checkMailExists } from '../../models/authentification/authModel.js';
 
 dotenv.config();
 
@@ -21,10 +21,6 @@ const cesarDecrypt = (text, shift = 11) => {
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
-  // ✅ Validate required fields
-  if (!email || !password) {
-    return res.json({ success: false, message: 'Tous les champs sont requis.' });
-  }
 
   try {
     const user = await findUserByEmail(email);
@@ -62,5 +58,50 @@ export const loginUser = async (req, res) => {
   } catch (error) {
     console.error('Erreur lors de la connexion :', error);
     return res.status(500).json({ success: false, message: 'Erreur serveur.' });
+  }
+};
+
+
+// Caesar cipher encryption (as you had it)
+function cesarEncrypt(text, shift = 11) {
+  return text.split('').map(char => {
+    if (/[a-zA-Z]/.test(char)) {
+      const base = char === char.toUpperCase() ? 'A' : 'a';
+      return String.fromCharCode((char.charCodeAt(0) - base.charCodeAt(0) + shift) % 26 + base.charCodeAt(0));
+    }
+    return char;
+  }).join('');
+}
+
+export const registerUser = async (req, res) => {
+  const { cin, email, password } = req.body;
+
+  try {
+
+    const existe = await checkUserExiste (cin);
+    if (existe) {
+      return res.json({ success: false, message: "Ce utilisateur avoire déjà un compte !" });
+    }
+
+    const id_personne = await checkCinExists(cin);
+    if (!id_personne) {
+      return res.json({ success: false, message: "Identifiants invalide !." });
+    }
+
+    const mailExists = await checkMailExists(email);
+    if (mailExists) {
+      return res.json({ success: false, message: "Cet email est déjà utilisé." });
+    }
+
+    const encryptedPassword = cesarEncrypt(password);
+    console.log("Encrypted password:", encryptedPassword);
+
+    await createAccount(id_personne, email, encryptedPassword);
+    console.log("Account created successfully.");
+
+    res.json({ success: true, message: "Inscription réussie !" });
+  } catch (error) {
+    console.error("Erreur lors de l'inscription:", error);
+    res.json({ success: false, message: "Erreur lors de l'inscription." });
   }
 };

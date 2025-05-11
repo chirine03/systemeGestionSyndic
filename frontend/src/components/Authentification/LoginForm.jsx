@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../services/user/loginService";
+import { loginUser } from "../../services/authentification/authService";
 import { useAuth } from "../../context/AuthContex"; // Import du contexte d'authentification
 
 const LoginForm = ({ onClose, switchToRegister }) => {

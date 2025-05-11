@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { fetchUserData } from "../../services/user/getUserService";  // ✅ Import du service
+import { fetchUserData } from "../../services/user/userService";  // ✅ Import du service
 import './Userprofile.css';
 
 const UserProfile = ({ show, handleClose, idPersonne }) => {

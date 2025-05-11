@@ -1,10 +1,9 @@
-const API_URL = "http://localhost:3001/api/login";
+const API_URL = "http://localhost:3001/api/auth";
 
 export const loginUser = async (email, password) => {
   try {
-    console.log("Sending login request to:", API_URL);
 
-    const response = await fetch(API_URL, {
+    const response = await fetch(`${API_URL}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -29,4 +28,14 @@ export const loginUser = async (email, password) => {
     console.error("Login error:", error);
     return { success: false, message: "Erreur réseau. Veuillez réessayer plus tard." };
   }
+};
+
+export const registerUser = async (cin, email, password) => {
+  const response = await fetch(`${API_URL}/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ cin, email, password }),
+  });
+
+  return await response.json();
 };

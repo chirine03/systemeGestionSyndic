@@ -6,10 +6,11 @@ import cors from 'cors';
 import serverless from 'serverless-http';
 
 // Routes
-import registerRoutes from '../routes/registerRoutes.js';
-import loginRoutes from '../routes/loginRoutes.js';
-import getUserRoutes from '../routes/getUserRoutes.js';
-import updateUserRoutes from '../routes/updateUserRoutes.js';
+
+import authRoutes from '../routes/authentification/authRoutes.js';
+//import getUserRoutes from '../routes/getUserRoutes.js';
+//import updateUserRoutes from '../routes/updateUserRoutes.js';
+import userRoutes from '../routes/user/userRoutes.js';
 import cotisationRoutes from '../routes/cotisation/cotisationRoutes.js';
 import listeComptesRoutes from '../routes/ComptesInscrit/listeComptesRoutes.js';
 import propPaiementRoutes from '../routes/listePaiement/propPaiementRoutes.js'; 
@@ -28,10 +29,10 @@ app.use(cors());
 app.use(express.json());
 
 // Register API routes
-app.use('/api', registerRoutes);
-app.use('/api', loginRoutes);
-app.use('/api', getUserRoutes);
-app.use('/api', updateUserRoutes);
+app.use('/api/auth', authRoutes);
+//app.use('/api', getUserRoutes);
+//app.use('/api', updateUserRoutes);
+app.use('/api/user', userRoutes)
 app.use('/api/cotisation', cotisationRoutes);
 app.use('/api/comptes', listeComptesRoutes); 
 app.use('/api', propPaiementRoutes);

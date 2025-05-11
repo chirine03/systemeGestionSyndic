@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Spinner, InputGroup } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { fetchUserData } from "../../services/user/getUserService";
-import { updateUser } from "../../services/user/updateUserService";
+import { fetchUserData, updateUser } from "../../services/user/userService";
 import "./SettingsForm.css";
 
 const SettingsForm = ({ show, handleClose, idPersonne }) => {
@@ -177,7 +176,7 @@ const SettingsForm = ({ show, handleClose, idPersonne }) => {
           {[
             { label: "Nom", name: "nom", type: "text" },
             { label: "Prénom", name: "prenom", type: "text" },
-            { label: "CIN", name: "cin", type: "text", disabled: true },
+            { label: "CIN", name: "cin", type: "text"},
             { label: "Date de Naissance", name: "date_nais", type: "date", min: "1900-01-01" },
             { label: "Adresse", name: "adresse", type: "text" },
             { label: "Téléphone", name: "telephone", type: "text" },

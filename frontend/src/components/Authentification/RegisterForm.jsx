@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { registerUser } from "../../services/user/registerService";
+import { registerUser } from "../../services/authentification/authService";
 
 const RegisterForm = ({ onClose, switchToLogin }) => {
   const [cin, setCin] = useState("");
