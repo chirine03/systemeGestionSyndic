@@ -39,7 +39,7 @@ export const ajouterPersonnel= async (req, res) => {
         const infosActuelles = await getInfosPersonnel(id_personne);
     
         if (infosActuelles.cin === cin && infosActuelles.telephone === telephone) {
-          const success = await updateProprietaire(id_personne, { nom, prenom, adresse, telephone, cin, date_nais });
+          const success = await updatePersonnel(id_personne, { nom, prenom, adresse, telephone, cin, date_nais, post, salaire });
           return success
             ? res.json({ success, message: "Personnel mis à jour." })
             : res.json({ success: false, message: "Échec de la mise à jour." });

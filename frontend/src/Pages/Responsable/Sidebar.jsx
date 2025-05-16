@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { FaMoneyBill, FaList, FaPlus, FaCalendarCheck, FaCoins, FaUsers, FaHandshake, FaWallet , FaHome, FaUserCog } from "react-icons/fa";
 import { RiCommunityFill } from "react-icons/ri";
 import { IoPeople } from "react-icons/io5";
-import {MdManageAccounts} from "react-icons/md";
 import { BsPersonWorkspace } from "react-icons/bs";
 
-import { MdOutlineDashboard } from "react-icons/md";
+import { HiOutlineChartPie } from "react-icons/hi";
+import { AiOutlineDashboard } from "react-icons/ai";
+
 import "./Sidebar.css";
 
 const Sidebar = ({ setContent }) => {
@@ -16,13 +17,17 @@ const Sidebar = ({ setContent }) => {
   const [showImmeuble, setShowImmeuble] = useState(false);
   const [showProprietaire, setShowProprietaire] = useState(false);
   const [showPersonnel, setShowPersonnel] = useState(false);
-  const [showAppartement, setShowAppartement,] = useState(false);
+  const [showAppartement, setShowAppartement] = useState(false);
 
 
   return (
-    <div className="sidebar d-flex flex-column p-3">
-      <h4 className="text-center mb-4">Tableau de Bord</h4>
+    <div className="sidebar d-flex flex-column p-3" style={{ height: "100vh", overflowY: "auto" }}>
+      <h4 className="text-center mb-4">Menu</h4>
       <ul className="nav flex-column">
+
+        <li className="nav-link" onClick={() => setContent("Dashboard")}>
+          <HiOutlineChartPie  className="me-2" />Dashboard Syndic
+        </li>
 
         <li className="nav-link" onClick={() => setShowImmeuble(!showImmeuble)}>
           <RiCommunityFill  className="me-2" /> Gérer Immeubles
@@ -43,15 +48,14 @@ const Sidebar = ({ setContent }) => {
         </li>
         {showAppartement && (
           <ul className="sub-menu">
+            <li className="nav-link" onClick={() => setContent("AjouterAppartement")}>
+              <FaPlus className="me-2" /> Ajouter Appartement
+            </li>
             <li className="nav-link" onClick={() => setContent("ListeAppartement")}>
               <FaList className="me-2" /> Liste des Appartements
               </li>
-            <li className="nav-link" onClick={() => setContent("AjouterAppartement")}>
-              <FaPlus className="me-2" /> Ajouter Appartement
-              </li>
           </ul>
         )}
-        
 
         <li className="nav-link" onClick={() => setShowProprietaire(!showProprietaire)}>
           <IoPeople className="me-2" /> Gérer Propriétaires
@@ -77,7 +81,7 @@ const Sidebar = ({ setContent }) => {
               <FaPlus className="me-2" /> Ajouter Personnel
             </li>
             <li className="nav-link" onClick={() => setContent("ListePersonnel")}>
-              <FaList className="me-2" /> Liste des Propriétaires
+              <FaList className="me-2" /> Liste des Personnel
             </li>
           </ul>
         )}

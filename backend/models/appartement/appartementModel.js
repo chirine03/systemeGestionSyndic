@@ -47,6 +47,16 @@ export const checkApprtExsiste = async (num_appartement) => {
 };
 
 
+export const UpdateAppartement = async (num_appartement, appartement) =>{
+  const {nbr_chambre, superficie, espace_parking, description, id_personne}= appartement;
+  const [result] = await connection.execute (
+    'UPDATE appartement SET nbr_chambre = ?, superficie = ?, espace_parking = ?, description = ?, id_personne = ? WHERE num_appartement = ?',
+    [nbr_chambre, superficie, espace_parking, description, id_personne, num_appartement]
+  );
+  return result.affectedRows > 0;
+};
+
+
 export const deleteAppartement = async (num_appartement) => {
   console.log("num_appartement", num_appartement); // Debugging line
   const [result] = await connection.execute(

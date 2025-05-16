@@ -11,6 +11,8 @@ import {
 
 const router = express.Router();
 
+router.use(express.json()); 
+
 // Route GET pour récupérer les infos
 router.get('/infos-cotisation', getInfosCotisation);
 

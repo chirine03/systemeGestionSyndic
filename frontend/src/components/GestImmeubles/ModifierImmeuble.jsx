@@ -23,10 +23,8 @@ const ModifierImmeuble = ({ immeuble, onClose, onUpdated }) => {
       newErrors.raison_sociale = "Utilisez uniquement lettres, chiffres et espaces.";
     }
 
-    if (!formData.matricule.trim()) {
-      newErrors.matricule = "Matricule est obligatoire.";
-    } else if (!/^[a-zA-Z0-9]{10,20}$/.test(formData.matricule)) {
-      newErrors.matricule = "Matricule invalide (10-20 caractères alphanumériques).";
+    if (!/^\d{8}$/.test(formData.telephone)) {
+      newErrors.telephone = "Téléphone invalide (8 chiffres).";
     }
 
     if (!formData.adresse.trim()) {
@@ -107,7 +105,7 @@ const ModifierImmeuble = ({ immeuble, onClose, onUpdated }) => {
             <div className="row g-3">
               {[
                 { label: "Raison sociale", name: "raison_sociale", type: "text" },
-                { label: "Matricule", name: "matricule", type: "text" },
+                { label: "Telephone", name: "telephone", type: "text" },
                 { label: "Adresse", name: "adresse", type: "text" },
                 { label: "Nombre d'étages", name: "nbr_etage", type: "number", min: "0" },
                 { label: "Bloc", name: "bloc", type: "text" },

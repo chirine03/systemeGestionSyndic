@@ -105,21 +105,22 @@
 
 .modal-overlay {
   position: fixed;
-  background-color: rgba(0,0,0,0.5);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999;
 }
-
 .modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  width: 300px;
-  text-align: center;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
 }
+
 
 .modal-buttons {
   display: flex;

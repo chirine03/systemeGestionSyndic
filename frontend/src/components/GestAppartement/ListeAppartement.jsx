@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchListeAppartements } from '../../services/appartement/appartementService';
 import SuppAppartement from './SuppAppartement';
-// import ModifierAppartement from './ModifierAppartement'; // ✅ import modale de modification
+import ModifierAppartement from './ModifierAppartement'; // ✅ import modale de modification
 
 const ListeAppartement = () => {
   const [appartements, setAppartements] = useState([]);
@@ -39,13 +39,14 @@ const ListeAppartement = () => {
   };
 
   // ✅ Appelé après modification réussie
-  const handleModificationReussie = (num_appartement) => {
+    const handleModificationReussie = (num_appartement, newData) => {
     setAppartements(prev =>
       prev.map(app =>
-        app.num_appartement === num_appartement ? { ...app, ...appartementAModifier } : app
+        app.num_appartement === num_appartement ? { ...app, ...newData } : app
       )
     );
   };
+
 
   return (
     <div className="container mt-4" style={{ marginLeft: "280px" }}>
@@ -109,13 +110,17 @@ const ListeAppartement = () => {
         onSuppressionReussie={handleSuppressionReussie}
       />
 
-      {/* Modale de modification 
+
       <ModifierAppartement
         show={showModalModif}
-        onClose={() => setShowModalModif(false)}
-        appartement={appartementAModifier}
-        onModifierReussi={handleModificationReussie}
-      />*/}
+        onHide={() => setShowModalModif(false)}
+        appartementData={appartementAModifier}
+        onSubmit={(updatedAppartement) => {
+          handleModificationReussie(updatedAppartement.num_appartement, updatedAppartement);
+          setShowModalModif(false);
+        }}
+      />
+
     </div>
   );
 };

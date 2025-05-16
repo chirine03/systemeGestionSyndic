@@ -1,4 +1,4 @@
-import {getListeAppartement, getImmeubleInfos, getProprietaireInfos, checkNumApprtExsiste, addAppartement, checkApprtExsiste, deleteAppartement} from "../../models/appartement/appartementModel.js";   
+import {getListeAppartement, getImmeubleInfos, getProprietaireInfos, checkNumApprtExsiste, addAppartement, checkApprtExsiste, UpdateAppartement, deleteAppartement} from "../../models/appartement/appartementModel.js";   
 
 export const listeAppartement = async (req, res) => {
     try {
@@ -45,6 +45,32 @@ export const getInfos = async (req, res) => {
       res.status(500).json({ message: "Erreur serveur." });
     }
   };
+
+
+
+export const modifierAppartement = async (req, res) => {
+  const { num_appartement, nbr_chambre, superficie, espace_parking, description, id_personne } = req.body;
+
+  try {
+    const updated = await UpdateAppartement(num_appartement, { nbr_chambre, superficie, espace_parking, description, id_personne  });
+
+    if (updated) {
+      return res.json({
+        success: true,
+        message: "appartement modifié avec succès.",
+      });
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: "appartement non trouvé.",
+      });
+    }
+  } catch (error) {
+    console.error("Erreur serveur :", error);
+    return res.status(500).json({ success: false, message: "Erreur serveur." });
+  }
+};
+
   
 export const supprimerAppartement = async (req, res) => {
   const { num_appartement } = req.body; // On extrait correctement la valeur

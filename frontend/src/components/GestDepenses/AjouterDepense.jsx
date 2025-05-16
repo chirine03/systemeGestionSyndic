@@ -17,7 +17,17 @@ const AjouterDepense = () => {
   const [pendingSubmit, setPendingSubmit] = useState(false);
   const [services, setServices] = useState([]);
 
-  const categories = ['Loyer', 'Électricité', 'Eau', 'Internet', 'Maintenance'];
+  const categories = [
+    'Taxe financière', 
+    'Électricité', 
+    'Eau',
+    'Gaz', 
+    'Internet', 
+    'Maintenance',
+    'Entretien courant',
+    'Nettoyage', 
+    'Achat', 
+    'Salaires'];
   const typesPaiement = ['Espèce', 'Virement', 'Versement', 'Chèque'];
 
   useEffect(() => {

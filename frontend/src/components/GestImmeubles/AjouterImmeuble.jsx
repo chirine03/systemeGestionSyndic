@@ -7,7 +7,7 @@ const AjouterImmeuble = () => {
   const [formData, setFormData] = useState({
     id_immeuble: '',
     raison_sociale: '',
-    matricule: '',
+    telephone: '',
     adresse: '',
     nbr_etage: '',
     bloc: '',
@@ -38,11 +38,9 @@ const AjouterImmeuble = () => {
       newErrors.raison_sociale = "Utilisez uniquement lettres, chiffres et espaces.";
     }
 
-    // Validation du matricule
-    if (!formData.matricule.trim()) {
-      newErrors.matricule = "Matricule est obligatoire.";
-    } else if (!/^[a-zA-Z0-9]{10,20}$/.test(formData.matricule)) {
-      newErrors.matricule = "Matricule invalide (10-20 caractères alphanumériques).";
+    // Validation du telephone
+    if (!/^\d{8}$/.test(formData.telephone)) {
+      newErrors.telephone = "Téléphone invalide (8 chiffres).";
     }
 
     // Validation de l'adresse
@@ -103,7 +101,7 @@ const AjouterImmeuble = () => {
         setFormData({
           id_immeuble: '',
           raison_sociale: '',
-          matricule: '',
+          telephone: '',
           adresse: '',
           nbr_etage: '',
           bloc: '',
@@ -143,15 +141,15 @@ const AjouterImmeuble = () => {
           </div>
 
           <div className="col-md-6 mb-3">
-            <label className="form-label fw-bold">Matricule *</label>
+            <label className="form-label fw-bold">Telephone *</label>
             <input
               type="text"
-              name="matricule"
-              value={formData.matricule}
+              name="telephone"
+              value={formData.telephone}
               onChange={handleChange}
-              className={`form-control ${errors.matricule ? 'is-invalid' : ''}`}
+              className={`form-control ${errors.telephone ? 'is-invalid' : ''}`}
             />
-            {errors.matricule && <div className="invalid-feedback">{errors.matricule}</div>}
+            {errors.telephone && <div className="invalid-feedback">{errors.telephone}</div>}
           </div>
 
           <div className="col-md-6 mb-3">

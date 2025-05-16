@@ -23,6 +23,8 @@ import SuiviDepense from "../../components/GestDepenses/SuiviDepense";
 import AjouterPersonnel from "../../components/GestPersonnel/AjouterPersonnel";
 import ListePersonnel from "../../components/GestPersonnel/ListePersonnel";
 
+import Dashboard from "../../components/Dashboard/Dashboard";
+
 const ResponsableHome = () => {
   const location = useLocation();
   const idPersonne = location.state?.idPersonne || localStorage.getItem("id_personne");
@@ -59,7 +61,8 @@ const ResponsableHome = () => {
         {content === "AjouterPersonnel" && <AjouterPersonnel />}
         {content === "ListePersonnel" && <ListePersonnel />}
         
-        
+        {content === "Dashboard" && <Dashboard />}
+
       </div>
     </div>
   );

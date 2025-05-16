@@ -29,10 +29,10 @@ export const getNomPrenomById = async (id) => {
 
 export const getTrimestresPayes = async (num, annee) => {
   const [rows] = await connection.execute(
-    'SELECT periode FROM cotisation WHERE num_appartement = ? AND annee = ?',
+    'SELECT MAX(periode) AS max_periode FROM cotisation WHERE num_appartement = ? AND annee = ?',
     [num, annee]
   );
-  return rows.map(row => row.periode);
+  return rows[0].max_periode; // retourne par exemple 3
 };
 
 export const isTrimestrePaye = async (num, annee, periode) => {
@@ -170,15 +170,15 @@ export const getSuiviGlobalCotisations = async () => {
       COUNT(DISTINCT CASE WHEN a.espace_parking = 'non' THEN a.num_appartement END) AS nbr_appart_sans_parking,
 
       (
-        COUNT(DISTINCT CASE WHEN a.espace_parking = 'oui' THEN a.num_appartement END) * ca.montant_avec_parking * 3 * 4 +
-        COUNT(DISTINCT CASE WHEN a.espace_parking = 'non' THEN a.num_appartement END) * ca.montant_sans_parking * 3 * 4
+        COUNT(DISTINCT CASE WHEN a.espace_parking = 'oui' THEN a.num_appartement END) * ca.montant_avec_parking * 12 +
+        COUNT(DISTINCT CASE WHEN a.espace_parking = 'non' THEN a.num_appartement END) * ca.montant_sans_parking * 12
       ) AS montant_total_annuel_a_payer,
 
       SUM(COALESCE(cot.montant, 0)) AS montant_total_paye,
 
       (
-        COUNT(DISTINCT CASE WHEN a.espace_parking = 'oui' THEN a.num_appartement END) * ca.montant_avec_parking * 3 * 4 +
-        COUNT(DISTINCT CASE WHEN a.espace_parking = 'non' THEN a.num_appartement END) * ca.montant_sans_parking * 3 * 4
+        COUNT(DISTINCT CASE WHEN a.espace_parking = 'oui' THEN a.num_appartement END) * ca.montant_avec_parking * 12 +
+        COUNT(DISTINCT CASE WHEN a.espace_parking = 'non' THEN a.num_appartement END) * ca.montant_sans_parking * 12
       ) - SUM(COALESCE(cot.montant, 0)) AS reste_a_payer
 
     FROM immeuble i

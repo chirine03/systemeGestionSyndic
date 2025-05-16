@@ -42,15 +42,13 @@ export const ajouterNouvelleCotisation = async (req, res) => {
 
   try {
     const appartement = await getAppartementDetails(numeroAppartement);
-    if (!appartement) return res.json({ status: 'error', message: 'Appartement non trouvé.' });
 
     const { id_personne, espace_parking } = appartement;
     const proprietaire = await getNomPrenomById(id_personne);
 
     let trimestres = await getTrimestresPayes(numeroAppartement, annee);
-    trimestres = trimestres.map(Number);
 
-    if (trimestres.length >= 4) {
+    if (trimestres == 4) {
       return res.json({
         status: 'error',
         message: `Les 4 trimestres sont déjà payés pour ${annee}.`,
@@ -65,13 +63,12 @@ export const ajouterNouvelleCotisation = async (req, res) => {
       });
     }
 
-    for (let i = 1; i < periode; i++) {
-      if (!trimestres.includes(i)) {
-        return res.json({
-          status: 'error',
-          message: `Impossible de payer le trimestre ${periode} avant d’avoir payé le trimestre ${i}.`,
-        });
-      }
+    const dernierTrimestre = parseInt(trimestres) || 0;
+    if (periode !== String(dernierTrimestre + 1)) {
+      return res.json({
+        status: 'error',
+        message: `Impossible d'ajouter le trimestre ${periode}, il ne suit pas l’ordre logique de paiement.`,
+      });
     }
 
     const montantAttendu = await getMontantAttendu(annee, espace_parking);
@@ -137,17 +134,15 @@ export const modifierCotisationExistante = async (req, res) => {
       anneeCotisation != annee ||
       periodeCotisation != periode
     ) {
-      let trimestres = await getTrimestresPayes(num_appartement, annee);
-      trimestres = trimestres.map(Number).filter(p => p !== Number(periode));
 
-      for (let i = 1; i < periode; i++) {
-        if (!trimestres.includes(i)) {
-          return res.json({
-            status: 'error',
-            message: `Impossible de modifier vers le trimestre ${periode} avant d’avoir payé le trimestre ${i}.`,
-          });
-        }
+      const maxPeriode = await getTrimestresPayes(num_appartement, annee);
+      if (periode > maxPeriode || periode < maxPeriode) {
+        return res.json({
+          status: 'error',
+          message: `Impossible de modifier vers le trimestre ${periode}, elle ne suit pas l’ordre logique de paiement.`,
+        });
       }
+
 
       const dejaPaye = await isTrimestrePaye(num_appartement, annee, periode);
       if (dejaPaye) {

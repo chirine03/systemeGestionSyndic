@@ -43,8 +43,8 @@ const AjouterProprietaire = ({ onSave }) => {
     if (!formData.date_nais) {
       newErrors.date_nais = "Date de naissance est requise.";
     } else {
-      const age = new Date().getFullYear() - new Date(formData.date_nais).getFullYear();
-      if (age < 18) newErrors.date_nais = "Le propriétaire doit avoir au moins 18 ans.";
+      if (new Date(formData.date_nais) > new Date()) {
+    newErrors.date_nais = "La date de naissance ne peut pas être dans le futur.";}
     }
 
     if (!/^\d{8}$/.test(formData.cin)) {

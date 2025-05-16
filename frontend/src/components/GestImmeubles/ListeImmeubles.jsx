@@ -99,7 +99,7 @@ const ListeImmeubles = () => {
                   </p>
                   <p className="card-text">
                     <FaIdCard className="me-2" />
-                    <strong>Matricule :</strong> {immeuble.matricule}
+                    <strong>Téléphone :</strong> {immeuble.telephone}
                   </p>
                   <p className="card-text">
                     <FaLayerGroup className="me-2" />

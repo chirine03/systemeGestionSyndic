@@ -98,6 +98,7 @@ export const getSuiviDepenseGlobal = async () => {
   const query = `
     SELECT 
       result.id_immeuble,
+      i.raison_sociale,
       result.annee,
       COALESCE(result.depenses_totales, 0) + COALESCE(result.services_non_payes, 0) AS depense_totale,
       COALESCE(result.services_payes, 0) AS totale_services_payes,
@@ -146,6 +147,7 @@ export const getSuiviDepenseGlobal = async () => {
       ) y ON 1=1
       GROUP BY s.id_immeuble, y.annee
     ) AS result
+    JOIN immeuble i ON result.id_immeuble = i.id_immeuble
     ORDER BY result.id_immeuble, result.annee;`;
 
   const [rows] = await connection.execute(query);

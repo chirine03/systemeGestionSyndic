@@ -8,8 +8,6 @@ import serverless from 'serverless-http';
 // Routes
 
 import authRoutes from '../routes/authentification/authRoutes.js';
-//import getUserRoutes from '../routes/getUserRoutes.js';
-//import updateUserRoutes from '../routes/updateUserRoutes.js';
 import userRoutes from '../routes/user/userRoutes.js';
 import cotisationRoutes from '../routes/cotisation/cotisationRoutes.js';
 import listeComptesRoutes from '../routes/ComptesInscrit/listeComptesRoutes.js';
@@ -22,6 +20,7 @@ import immeubleRoutes from '../routes/immeuble/immeubleRoutes.js';
 import proprietaireRoutes from '../routes/proprietaire/proprietaireRoutes.js';
 import appartementRoutes from '../routes/appartement/appartementRoutes.js';
 import personnelRoutes from '../routes/personnel/personnelRoutes.js';
+import statistiquesRoutes from '../routes/statistiques/statistiquesRoutes.js'
 
 const app = express();
 
@@ -30,20 +29,33 @@ app.use(express.json());
 
 // Register API routes
 app.use('/api/auth', authRoutes);
-//app.use('/api', getUserRoutes);
-//app.use('/api', updateUserRoutes);
+
 app.use('/api/user', userRoutes)
+
 app.use('/api/cotisation', cotisationRoutes);
+
 app.use('/api/comptes', listeComptesRoutes); 
+
 app.use('/api', propPaiementRoutes);
+
 app.use('/api', getPersonneRoutes);
+
 app.use('/api/prestataires', prestatairesRoutes);
+
 app.use('/api/services', servicesRoutes);
+
 app.use('/api/depense', depenseRoutes); 
+
 app.use('/api/immeuble', immeubleRoutes);
+
 app.use('/api/proprietaire', proprietaireRoutes);
+
 app.use('/api/appartement', appartementRoutes);
+
 app.use('/api/personnel', personnelRoutes);
+
+app.use('/api/statistiques', statistiquesRoutes);
+
 
 
 export const handler = serverless(app);

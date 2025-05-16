@@ -26,22 +26,17 @@ const AjouterPrestataire = () => {
     } else if (!/^[a-zA-Z0-9\s]+$/.test(formData.raison_sociale)) {
       newErrors.raison_sociale = "Utilisez uniquement lettres, chiffres et espaces.";
     }
-    if (!formData.num_matricule.trim()) {
-      newErrors.num_matricule = "Matricule est obligatoire.";
-    } else if (!/^[a-zA-Z0-9]{10,20}$/.test(formData.num_matricule)) {
+
+    if (formData.num_matricule && !/^[a-zA-Z0-9]{8,20}$/.test(formData.num_matricule)) {
       newErrors.num_matricule = "Matricule invalide (10-20 caractères).";
     }
-    if (!formData.telephone.trim()) {
-      newErrors.telephone = "Le téléphone est obligatoire.";
-    } else if (!/^\d{8}$/.test(formData.telephone)) {
+   if (formData.telephone && !/^\d{8}$/.test(formData.telephone)) {
       newErrors.telephone = "Téléphone doit avoir exactement 8 chiffres.";
     }
     if (formData.fax && !/^\d{8}$/.test(formData.fax)) {
       newErrors.fax = "Fax doit avoir exactement 8 chiffres.";
     }
-    if (!formData.email.trim()) {
-      newErrors.email = "Email est obligatoire.";
-    } else if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(formData.email)) {
+    if (formData.email && !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(formData.email)) {
       newErrors.email = "Format d'email invalide.";
     }
     if (formData.site_web && !/^[a-zA-Z0-9.-]+\.([a-zA-Z]{2,})$/.test(formData.site_web)) {
@@ -106,7 +101,7 @@ const AjouterPrestataire = () => {
       <form onSubmit={handleSubmit} noValidate>
         <div className="form-row">
           <div className="form-group">
-            <label>Raison Sociale *</label>
+            <label>Raison Sociale </label>
             <input
               type="text"
               name="raison_sociale"
@@ -117,7 +112,7 @@ const AjouterPrestataire = () => {
             {errors.raison_sociale && <p className="error-message">{errors.raison_sociale}</p>}
           </div>
           <div className="form-group">
-            <label>Matricule Fiscale *</label>
+            <label>Matricule Fiscale </label>
             <input
               type="text"
               name="num_matricule"
@@ -143,7 +138,7 @@ const AjouterPrestataire = () => {
             {errors.adresse && <p className="error-message">{errors.adresse}</p>}
           </div>
           <div className="form-group">
-            <label>Téléphone *</label>
+            <label>Téléphone </label>
             <input
               type="text"
               name="telephone"
@@ -168,7 +163,7 @@ const AjouterPrestataire = () => {
             {errors.fax && <p className="error-message">{errors.fax}</p>}
           </div>
           <div className="form-group">
-            <label>Email *</label>
+            <label>Email </label>
             <input
               type="email"
               name="email"

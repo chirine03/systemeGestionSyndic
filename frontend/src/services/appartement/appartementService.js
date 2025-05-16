@@ -74,6 +74,32 @@ export const ajouterAppartement = async (appartementData) => {
 };
 
 
+export const modifierAppartement = async (appartement) => {
+  try {
+    console.log("Données à modifier :", appartement); // Debugging line
+    const response = await fetch(`${API_URL}/modifier-appartement`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(appartement),
+    });
+
+    const result = await response.json();
+    console.log("Résultat de la modification :", result);
+
+    if (result.success) {
+      return { success: true, message: "appartement modifié avec succès." };
+    } else {
+      return { success: false, message: result.message || "Erreur lors de la modification." };
+    }
+  } catch (error) {
+    console.error("Erreur lors de la modification de l'appartement :", error);
+    return { success: false, message: "Erreur réseau. Veuillez réessayer plus tard." };
+  }
+};
+
+
 export const supprimerAppartement = async (num_appartement) => {
     try {
       const response = await fetch(`${API_URL}/supprimer-appartement`, {

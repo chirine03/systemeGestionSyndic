@@ -64,7 +64,7 @@ const ListePrestataire = () => {
     setShowEditModal(false);
     setSelectedPrestataire(null);
     }, 1500);
-  };
+  }; 
   
   const handleSaveEdit = (updatedPrestataire) => {
     if (!updatedPrestataire || !updatedPrestataire.id_prestataire) {

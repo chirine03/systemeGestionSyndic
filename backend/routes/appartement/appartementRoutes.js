@@ -1,5 +1,5 @@
 import express from 'express';
-import {listeAppartement, getInfos, ajouterAppartement, supprimerAppartement} from '../../controllers/appartement/appartementController.js';
+import {listeAppartement, getInfos, ajouterAppartement, modifierAppartement, supprimerAppartement} from '../../controllers/appartement/appartementController.js';
 
 const router = express.Router();
 
@@ -13,6 +13,9 @@ router.get('/infos', getInfos);
 
 // Route POST pour ajouter un appartement
 router.post('/ajouter-appartement', ajouterAppartement);
+
+// Route POST pour modifier un appartement
+router.post('/modifier-appartement', modifierAppartement);
 
 // Route POST pour supprimer un appartement
 router.post('/supprimer-appartement', supprimerAppartement);

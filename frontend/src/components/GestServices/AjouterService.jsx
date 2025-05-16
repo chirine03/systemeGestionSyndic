@@ -51,7 +51,6 @@ const AjouterService = ({ onClose }) => {
     const today = new Date().toISOString().split('T')[0];
 
     if (!formData.nom.trim()) newErrors.nom = 'Le nom est requis.';
-    else if (!alphaRegex.test(formData.nom)) newErrors.nom = 'Le nom doit contenir uniquement des lettres.';
     else if (formData.nom.length < 3) newErrors.nom = 'Le nom doit contenir au moins 3 caractères.';
 
     if (!formData.type.trim()) newErrors.type = 'Le type est requis.';
@@ -150,7 +149,7 @@ const AjouterService = ({ onClose }) => {
               </div>
 
               <div className="mb-3">
-                <label className="form-label">Montant *</label>
+                <label className="form-label">Montant DTN *</label>
                 <input type="number" name="montant" className="form-control" value={formData.montant} onChange={handleChange} />
                 {errors.montant && <div className="text-danger">{errors.montant}</div>}
               </div>

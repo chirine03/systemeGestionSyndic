@@ -96,7 +96,7 @@ const SuiviCotisation = () => {
             className="rounded-pill shadow-sm"
           >
             <option value="">🗓️ Filtrer par trimestre</option>
-            {[1, 2, 3, 4].map((trimestre) => (
+            {[0, 1, 2, 3, 4].map((trimestre) => (
               <option key={trimestre} value={trimestre}>
                  {trimestre} Trimestre
               </option>

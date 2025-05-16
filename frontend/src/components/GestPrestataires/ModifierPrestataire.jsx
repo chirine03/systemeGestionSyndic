@@ -37,9 +37,10 @@ const ModifierPrestataire = ({ show, onClose, prestataire, onSave }) => {
     const phoneRegex = /^\d{8}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const urlRegex = /^(https?:\/\/)?[\w.-]+\.\w{2,}$/;
+    const matRegex = /^[a-zA-Z0-9]{8,20}$/;
 
     if (!formData.raison_sociale.trim()) newErrors.raison_sociale = 'Champ requis';
-    if (!formData.num_matricule.trim()) newErrors.num_matricule = 'Champ requis';
+    if (formData.num_matricule && !matRegex.test(formData.num_matricule)) newErrors.num_matricule = 'matricule invalide';
     if (formData.telephone && !phoneRegex.test(formData.telephone)) newErrors.telephone = '8 chiffres requis';
     if (formData.fax && !phoneRegex.test(formData.fax)) newErrors.fax = '8 chiffres requis';
     if (formData.email && !emailRegex.test(formData.email)) newErrors.email = 'Email invalide';
@@ -65,7 +66,7 @@ const ModifierPrestataire = ({ show, onClose, prestataire, onSave }) => {
         onSave(result);
         setTimeout(() => {
           onClose();
-        }, 1500);
+        }, 500);
       } else {
         setAlert({ type: 'danger', message: result.message || 'Échec de la modification.' });
       }
