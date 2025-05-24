@@ -1,0 +1,23 @@
+/* copyright.css */
+.footer-copyright {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 0.75rem 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  z-index: 1;
+}
+
+.style-a{
+    color: #0c3d5d;
+    background-color: rgba(176, 174, 174, 0.16);
+
+}
+
+.style-b{
+    color: #ffffff;
+    background-color: rgba(88, 87, 87, 0.3);
+}

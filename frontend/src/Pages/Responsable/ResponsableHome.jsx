@@ -25,20 +25,22 @@ import ListePersonnel from "../../components/GestPersonnel/ListePersonnel";
 
 import Dashboard from "../../components/Dashboard/Dashboard";
 
+import Copyright from "../../components/copyright/Copyright";
+
+
 const ResponsableHome = () => {
   const location = useLocation();
   const idPersonne = location.state?.idPersonne || localStorage.getItem("id_personne");
   const [content, setContent] = useState(""); // State for content display
 
   return (
-    <div className="d-flex">
+    <div className="d-flex" style={{ paddingBottom: '50px' }}>
       <MainLayout idPersonne={idPersonne} />
       
       <Sidebar setContent={setContent} />
       
-      {/* Dynamic Content Display */}
       <div className="content p-4">
-        {/* Default content if none selected */}
+
         {!content && <Bienvenu />}
 
         {content === "SuiviCotisation" && <SuiviCotisation />}
@@ -64,6 +66,7 @@ const ResponsableHome = () => {
         {content === "Dashboard" && <Dashboard />}
 
       </div>
+       <Copyright variant="style-a"/>
     </div>
   );
 };

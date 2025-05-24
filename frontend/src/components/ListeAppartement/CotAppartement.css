@@ -15,7 +15,8 @@
   /* === Contenu centré et stylé === */
   .ReactModal__Content {
     position: relative;
-    max-width: 90%;
+    width: 800px;
+    max-width: 900px;
     max-height: 90vh;
     overflow-y: auto;
     outline: none;

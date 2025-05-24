@@ -74,7 +74,7 @@ const AjouterProprietaire = ({ onSave }) => {
     try {
       const result = await ajouterProprietaire(formData);
       if (result.success) {
-        setApiMessage({ text: "Propriétaire ajouté avec succès !", type: "success" });
+        setApiMessage({ text: result.message, type: "success" });
         if (onSave) onSave();
         setFormData({
           nom: "",
@@ -84,6 +84,9 @@ const AjouterProprietaire = ({ onSave }) => {
           date_nais: "",
           cin: "",
         });
+        setTimeout(() => {
+          setApiMessage("");
+        }, 1500);
         setErrors({});
       } else {
         setApiMessage({ text: result.message, type: "danger" });

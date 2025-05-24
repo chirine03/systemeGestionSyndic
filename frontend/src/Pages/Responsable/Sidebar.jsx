@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { FaMoneyBill, FaList, FaPlus, FaCalendarCheck, FaCoins, FaUsers, FaHandshake, FaWallet , FaHome, FaUserCog } from "react-icons/fa";
+import {
+  FaMoneyBill, FaList, FaPlus, FaCalendarCheck, FaCoins, FaUsers, FaHandshake,
+  FaWallet, FaHome, FaUserCog, FaArrowLeft, FaArrowRight
+} from "react-icons/fa";
 import { RiCommunityFill } from "react-icons/ri";
 import { IoPeople } from "react-icons/io5";
 import { BsPersonWorkspace } from "react-icons/bs";
-
 import { HiOutlineChartPie } from "react-icons/hi";
-import { AiOutlineDashboard } from "react-icons/ai";
-
 import "./Sidebar.css";
 
 const Sidebar = ({ setContent }) => {
@@ -18,32 +18,39 @@ const Sidebar = ({ setContent }) => {
   const [showProprietaire, setShowProprietaire] = useState(false);
   const [showPersonnel, setShowPersonnel] = useState(false);
   const [showAppartement, setShowAppartement] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
 
   return (
-    <div className="sidebar d-flex flex-column p-3" style={{ height: "100vh", overflowY: "auto" }}>
-      <h4 className="text-center mb-4">Menu</h4>
-      <ul className="nav flex-column">
+    <>
+      <div className={`sidebar p-3 d-flex flex-column ${isCollapsed ? 'collapsed' : ''}`}>
+        {!isCollapsed && <h4 className="text-center mb-4">Menu</h4>}
 
-        <li className="nav-link" onClick={() => setContent("Dashboard")}>
-          <HiOutlineChartPie  className="me-2" />Dashboard Syndic
-        </li>
+        {!isCollapsed && (
+        <ul className="nav flex-column">
+          <li className="nav-link" onClick={() => setContent("Dashboard")}>
+            <HiOutlineChartPie className="me-2" /> Dashboard Syndic
+          </li>
 
-        <li className="nav-link" onClick={() => setShowImmeuble(!showImmeuble)}>
-          <RiCommunityFill  className="me-2" /> Gérer Immeubles
-        </li>
-        {showImmeuble && (
-          <ul className="sub-menu">
-            <li className="nav-link" onClick={() => setContent("AjouterImmeuble")}>
-              <FaPlus className="me-2" /> Ajouter Immeuble
-            </li>
-            <li className="nav-link" onClick={() => setContent("ListeImmeubles")}>
-              <FaList className="me-2" /> Liste des Immeubles
-            </li>
-          </ul>
-        )}
+          <li className="nav-link" onClick={() => setShowImmeuble(!showImmeuble)}>
+            <RiCommunityFill className="me-2" /> Gérer Immeubles
+          </li>
+          {showImmeuble && (
+            <ul className="sub-menu">
+              <li className="nav-link" onClick={() => setContent("AjouterImmeuble")}>
+                <FaPlus className="me-2" /> Ajouter Immeuble
+              </li>
+              <li className="nav-link" onClick={() => setContent("ListeImmeubles")}>
+                <FaList className="me-2" /> Liste des Immeubles
+              </li>
+            </ul>
+          )}
 
-        <li className="nav-link" onClick={() => setShowAppartement(!showAppartement)}>
+
+                <li className="nav-link" onClick={() => setShowAppartement(!showAppartement)}>
           <FaHome className="me-2" /> Gérer Appartements
         </li>
         {showAppartement && (
@@ -151,11 +158,22 @@ const Sidebar = ({ setContent }) => {
           </ul>
         )}
 
-        <li className="nav-link" onClick={() => setContent("ListeComptes")}>
-          <BsPersonWorkspace className="me-2" />Suivi Comptes Inscrit
-        </li>
-      </ul>
-    </div>
+          <li className="nav-link" onClick={() => setContent("ListeComptes")}>
+            <BsPersonWorkspace className="me-2" /> Suivi Comptes Inscrit
+          </li>
+        </ul>
+      )}
+      </div>
+
+      {/* Bouton toggle en dehors de la sidebar */}
+      <button
+        onClick={toggleSidebar}
+        className="toggle-btn btn btn-sm btn-light"
+        aria-label="Toggle Sidebar"
+      >
+        {isCollapsed ? <FaArrowRight /> : <FaArrowLeft />}
+      </button>
+    </>
   );
 };
 

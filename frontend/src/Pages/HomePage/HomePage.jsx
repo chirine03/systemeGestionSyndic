@@ -4,6 +4,7 @@ import "./HomePage.css";
 import { motion } from "framer-motion";
 import { FaBuilding } from "react-icons/fa";
 import AuthModal from "../../components/Authentification/AuthModal";
+import Copyright from "../../components/copyright/Copyright";
 const HomePage = () => {
 
 console.log("home chargé !");
@@ -30,7 +31,7 @@ console.log("home chargé !");
 
   return (
     <div className="home-container">
-      <div className="overlay">
+      <div className="overlay" style={{ paddingBottom: '50px' }}>
         {/* Navbar */}
         <nav className="navbar navbar-expand-lg navbar-dark">
           <div className="container d-flex justify-content-between align-items-center">
@@ -87,6 +88,8 @@ console.log("home chargé !");
           </div>
         </div>
       </div>
+
+      <Copyright variant="style-b" />
 
       {/* Authentication Modal */}
       <AuthModal 

@@ -13,7 +13,7 @@ export const getListePaiement = async (req, res) => {
     const paiements = await getPaiementData(id_personne);
 
     if (!paiements || paiements.length === 0) {
-      return res.json({ success: false, message: 'Aucun paiement trouvé pour cet utilisateur.' });
+      return res.json({ success: false, message: 'Aucun appartement trouvé pour le moment.' });
     }
 
     return res.json({ success: true, paiements });

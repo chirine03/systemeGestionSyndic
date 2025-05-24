@@ -21,6 +21,7 @@ const CotAppartement = ({ isOpen, onClose, appartement }) => {
     const loadInfos = async () => {
       setLoading(true);
       const result = await fetchCotisationInfos();
+      console.log("Résultat de fetchCotisationInfos :", result);
       if (!result.success) {
         console.error("Erreur :", result.message);
       }

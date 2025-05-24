@@ -1,47 +1,82 @@
 .sidebar {
   width: 255px;
   height: 100vh;
-  background-color: rgb(243, 243, 243);
+  background-color: #f8f9fa;
   color: #0c3d5d;
   position: fixed;
-  top: 0;
+  top: 65px; /* ajuster si besoin */
   left: 0;
   padding-top: 20px;
-  margin-top: 65px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s ease;
+  overflow-y: auto;
+  white-space: nowrap;
   z-index: 1000;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+  overflow-x: hidden;
 }
 
 .sidebar .nav-link {
   color: #0c3d5d;
   padding: 12px;
-  transition: 0.3s;
-  cursor: pointer;
   font-size: 17px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .sidebar .nav-link:hover {
   background-color: rgb(120, 179, 213);
   border-radius: 10px;
-  color: #fff;
+  color: white;
   font-weight: bold;
-  font-size: 15px;
+}
+
+.sidebar.collapsed .nav-link {
+  font-size: 0;
+  padding-left: 0;
+}
+
+.sidebar.collapsed .nav-link svg {
+  margin: 0 auto;
+  display: block;
+  font-size: 1.2rem;
 }
 
 .sub-menu {
   padding-left: 20px;
-
 }
 
 .sub-menu .nav-link {
   font-size: 14px;
-  color: #0c3d5d;
   padding: 8px 10px;
-  transition: 0.3s;
 }
 
 .sub-menu .nav-link:hover {
   background-color: rgb(180, 220, 240);
   border-radius: 10px;
-  color: #fff;
+  color: white;
+}
+
+.sidebar .nav-link.active {
+  background-color: rgb(134, 211, 255);
+  color: white;
+  font-weight: bold;
+}
+
+/* Bouton toggle */
+.toggle-btn {
+  position: fixed;
+  top: 90px; /* ajuster selon header */
+  left: 255px;
+  z-index: 1100;
+  transition: left 0.3s ease;
+  border-radius: 0 5px 5px 0;
+}
+
+/* Quand sidebar réduite, bouton se décale */
+.sidebar.collapsed ~ .toggle-btn {
+  left: 60px;
 }
