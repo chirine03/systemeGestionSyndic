@@ -16,7 +16,6 @@ const ModifierPrestataire = ({ show, onClose, prestataire, onSave }) => {
   });
 
   const [errors, setErrors] = useState({});
-  const [showConfirmation, setShowConfirmation] = useState(false);
   const [alert, setAlert] = useState({ type: '', message: '' });
 
   useEffect(() => {
@@ -50,23 +49,16 @@ const ModifierPrestataire = ({ show, onClose, prestataire, onSave }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate()) {
-      setShowConfirmation(true);
-    }
-  };
+    if (!validate()) return;
 
-  const handleConfirm = async () => {
-    setShowConfirmation(false);
     try {
       const result = await updatePrestataire(formData);
       if (result.success) {
         setAlert({ type: 'success', message: 'Prestataire modifié avec succès !' });
         onSave(result);
-        setTimeout(() => {
-          onClose();
-        }, 500);
+        setTimeout(() => onClose(), 500);
       } else {
         setAlert({ type: 'danger', message: result.message || 'Échec de la modification.' });
       }
@@ -74,6 +66,7 @@ const ModifierPrestataire = ({ show, onClose, prestataire, onSave }) => {
       setAlert({ type: 'danger', message: 'Une erreur est survenue.' });
     }
   };
+
   
 
   return (
@@ -114,7 +107,6 @@ const ModifierPrestataire = ({ show, onClose, prestataire, onSave }) => {
                     value={formData.num_matricule}
                     onChange={handleChange}
                     isInvalid={!!errors.num_matricule}
-                    required
                   />
                   <Form.Control.Feedback type="invalid">{errors.num_matricule}</Form.Control.Feedback>
                 </Form.Group>
@@ -203,22 +195,6 @@ const ModifierPrestataire = ({ show, onClose, prestataire, onSave }) => {
             </div>
           </Form>
         </Modal.Body>
-      </Modal>
-
-      {/* Modal de confirmation */}
-      <Modal show={showConfirmation} onHide={() => setShowConfirmation(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirmer la modification</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Êtes-vous sûr de vouloir modifier ce prestataire ?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowConfirmation(false)}>
-            Annuler
-          </Button>
-          <Button variant="primary" onClick={handleConfirm}>
-            Confirmer
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   );

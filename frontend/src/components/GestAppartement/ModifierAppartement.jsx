@@ -68,7 +68,11 @@ const ModifierAppartement = ({ show, onHide, appartementData, onSubmit }) => {
         const response = await modifierAppartement(appartementData); // Appel de votre fonction de service
         if (response.success) {
           setMessage({ type: 'success', text: response.message });
-          onHide(); // Fermer la modal
+          setTimeout(() => {
+            onHide(); 
+            onSubmit();
+            setMessage(null);
+          }, 1500);
         } else {
           setMessage({ type: 'danger', text: response.message });
         }
@@ -86,10 +90,11 @@ const ModifierAppartement = ({ show, onHide, appartementData, onSubmit }) => {
       </Modal.Header>
       <Modal.Body>
         {message && (
-          <Alert variant={message.type === 'success' ? 'success' : 'danger'}>
+          <div style={{ color: message.type === 'danger' ? 'red' : 'green', marginBottom: '15px', textAlign: 'center' }}>
             {message.text}
-          </Alert>
+          </div>
         )}
+
         <Form onSubmit={handleSubmit}>
           <Row className="mb-3">
             <Form.Group as={Col} md="6">

@@ -9,6 +9,7 @@ import serverless from 'serverless-http';
 
 import authRoutes from '../routes/authentification/authRoutes.js';
 import userRoutes from '../routes/user/userRoutes.js';
+import cotAnnuelleRoutes from '../routes/cotAnnuelle/cotAnnuelleRoutes.js';
 import cotisationRoutes from '../routes/cotisation/cotisationRoutes.js';
 import listeComptesRoutes from '../routes/ComptesInscrit/listeComptesRoutes.js';
 import propPaiementRoutes from '../routes/listePaiement/propPaiementRoutes.js'; 
@@ -33,6 +34,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes)
 
 app.use('/api/cotisation', cotisationRoutes);
+
+app.use('/api/cotAnnuelle', cotAnnuelleRoutes);
 
 app.use('/api/comptes', listeComptesRoutes); 
 

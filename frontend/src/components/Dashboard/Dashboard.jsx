@@ -1,26 +1,33 @@
 import React from "react";
-import GlobalCotisation from "./GlobalCotisation";
-import TauxPaiementCot from "./TauxPaiementCot";
 import { Container, Row, Col } from "react-bootstrap";
+import Cards from "./Card";
+import TauxDepensePrestataire from "./TauxDepensePrestataire";
+import TotalDepensesParImmeuble from "./TotalDepensesParImmeuble";
+import EvolDepense from "./EvolDepense"
+import DepensePayeNonPaye from "./DepensePayeNonPaye"
 
 function Dashboard() {
     return (
-        <Container fluid className="py-4">
-            <h2 className="mb-4 text-center">Tableau de Bord des Cotisations</h2>
-            
-            <Row className="g-4">
-                {/* Première colonne - GlobalCotisation */}
-                <Col xl={7} lg={12} md={12}>
-                    <div className="p-3 bg-white rounded shadow-sm h-100">
-                        <GlobalCotisation />
-                    </div>
-                </Col>
+        <Container fluid className="py-4" style={{ marginLeft: "150px" }}>
+            <h1 className="dashboard-title text-center">Table de Bord Syndic</h1>
 
-                {/* Deuxième colonne - TauxPaiementCot */}
-                <Col xl={5} lg={12} md={12}>
-                    <div className="p-3 bg-white rounded shadow-sm h-100">
-                        <TauxPaiementCot />
-                    </div>
+            <Cards />
+
+            <Row>
+                <Col md={5}>
+                    <TauxDepensePrestataire />
+                </Col>
+                <Col md={5}>
+                    <TotalDepensesParImmeuble />
+                </Col>
+            </Row>
+
+            <Row>
+                <Col md={5}>
+                    <EvolDepense />
+                </Col>
+                <Col md={5}>
+                    <DepensePayeNonPaye />
                 </Col>
             </Row>
         </Container>

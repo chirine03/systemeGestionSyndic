@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { fetchListeAppartements } from '../../services/appartement/appartementService';
 import SuppAppartement from './SuppAppartement';
-import ModifierAppartement from './ModifierAppartement'; // ✅ import modale de modification
+import ModifierAppartement from './ModifierAppartement';
 
 const ListeAppartement = () => {
   const [appartements, setAppartements] = useState([]);
-  const [showModalSupp, setShowModalSupp] = useState(false); // ✅ Modale suppression
-  const [showModalModif, setShowModalModif] = useState(false); // ✅ Modale modification
-  const [appartementASupprimer, setAppartementASupprimer] = useState(null); // ✅
-  const [appartementAModifier, setAppartementAModifier] = useState(null); // ✅
+  const [filteredAppartements, setFilteredAppartements] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const [showModalSupp, setShowModalSupp] = useState(false);
+  const [showModalModif, setShowModalModif] = useState(false);
+  const [appartementASupprimer, setAppartementASupprimer] = useState(null);
+  const [appartementAModifier, setAppartementAModifier] = useState(null);
 
   const chargerAppartements = async () => {
     const response = await fetchListeAppartements();
     if (response.success) {
       setAppartements(response.data);
+      setFilteredAppartements(response.data);
     }
   };
 
@@ -21,36 +25,50 @@ const ListeAppartement = () => {
     chargerAppartements();
   }, []);
 
-  // ✅ Ouvre la modale de suppression
+  // ✅ Recherche dynamique
+  useEffect(() => {
+    const term = searchTerm.toLowerCase();
+    const filtered = appartements.filter(app =>
+    (app.num_appartement?.toLowerCase() || '').includes(term) ||
+    (app.superficie?.toString() || '').includes(term) ||
+    (app.nbr_chambre?.toString() || '').includes(term) ||
+    (app.nom_personne?.toLowerCase() || '').includes(term) ||
+    (app.prenom_personne?.toLowerCase() || '').includes(term)
+  );
+
+    setFilteredAppartements(filtered);
+  }, [searchTerm, appartements]);
+
   const handleSupprimerClick = (appartement) => {
     setAppartementASupprimer(appartement);
     setShowModalSupp(true);
   };
 
-  // ✅ Ouvre la modale de modification
   const handleModifierClick = (appartement) => {
     setAppartementAModifier(appartement);
     setShowModalModif(true);
   };
 
-  // ✅ Appelé après suppression réussie
   const handleSuppressionReussie = (id_supprime) => {
-    setAppartements(prev => prev.filter(app => app.num_appartement !== id_supprime));
+    const updated = appartements.filter(app => app.num_appartement !== id_supprime);
+    setAppartements(updated);
+    setFilteredAppartements(updated);
   };
-
-  // ✅ Appelé après modification réussie
-    const handleModificationReussie = (num_appartement, newData) => {
-    setAppartements(prev =>
-      prev.map(app =>
-        app.num_appartement === num_appartement ? { ...app, ...newData } : app
-      )
-    );
-  };
-
 
   return (
     <div className="container mt-4" style={{ marginLeft: "280px" }}>
-      <h2 className="text-center mb-5 fw-bold">Liste des Appartements</h2>
+      <h2 className="text-center mb-4 fw-bold">Liste des Appartements</h2>
+
+      {/* ✅ Zone de recherche */}
+      <div className="mb-4">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Rechercher par numéro, superficie, chambres ou nom du propriétaire..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
 
       <table className="table table-bordered table-hover">
         <thead className="table-secondary">
@@ -62,13 +80,13 @@ const ListeAppartement = () => {
             <th>Étage</th>
             <th>Parking</th>
             <th>Description</th>
-            <th>Propriétaire</th> {/* Nouvelle colonne pour le propriétaire */}
+            <th>Propriétaire</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {appartements.length > 0 ? (
-            appartements.map((app, index) => (
+          {filteredAppartements.length > 0 ? (
+            filteredAppartements.map((app, index) => (
               <tr key={index} className="text-center">
                 <td>{index + 1}</td>
                 <td>{app.num_appartement}</td>
@@ -77,32 +95,23 @@ const ListeAppartement = () => {
                 <td>{app.etage}</td>
                 <td>{app.espace_parking}</td>
                 <td>{app.description || 'N/A'}</td>
-                <td>{app.nom_personne} {app.prenom_personne}</td> {/* Affichage du nom et prénom du propriétaire */}
+                <td>{app.nom_personne} {app.prenom_personne}</td>
                 <td>
                   <button
                     className="btn btn-sm btn-primary me-2"
-                    onClick={() => handleModifierClick(app)} // ✅
-                  >
-                    Modifier
-                  </button>
-                  <button
-                    className="btn btn-sm btn-danger"
-                    onClick={() => handleSupprimerClick(app)} // ✅
-                  >
-                    Supprimer
-                  </button>
+                    onClick={() => handleModifierClick(app)}
+                  >Modifier</button>
                 </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="9" className="text-center">Aucun appartement trouvé.</td> {/* Note : il y a maintenant 9 colonnes */}
+              <td colSpan="9" className="text-center">Aucun appartement trouvé.</td>
             </tr>
           )}
         </tbody>
       </table>
 
-      {/* Modale de suppression */}
       <SuppAppartement
         show={showModalSupp}
         onClose={() => setShowModalSupp(false)}
@@ -110,17 +119,15 @@ const ListeAppartement = () => {
         onSuppressionReussie={handleSuppressionReussie}
       />
 
-
       <ModifierAppartement
         show={showModalModif}
         onHide={() => setShowModalModif(false)}
         appartementData={appartementAModifier}
-        onSubmit={(updatedAppartement) => {
-          handleModificationReussie(updatedAppartement.num_appartement, updatedAppartement);
+        onSubmit={async () => {
           setShowModalModif(false);
+          await chargerAppartements();
         }}
       />
-
     </div>
   );
 };

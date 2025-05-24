@@ -26,13 +26,18 @@ const AjouterPersonnel= ({ onSave }) => {
       newErrors.nom = "Nom est requis.";
     } else if (!/^[a-zA-ZÀ-ÿ\s\-]+$/.test(formData.nom)) {
       newErrors.nom = "Nom invalide (lettres et espaces uniquement).";
+    } else if (formData.nom.length > 10) {
+      newErrors.nom = "Nom ne doit pas dépasser 10 caractères.";
     }
 
     if (!formData.prenom.trim()) {
       newErrors.prenom = "Prénom est requis.";
     } else if (!/^[a-zA-ZÀ-ÿ\s\-]+$/.test(formData.prenom)) {
       newErrors.prenom = "Prénom invalide (lettres et espaces uniquement).";
+    } else if (formData.prenom.length > 20) {
+      newErrors.prenom = "Prénom ne doit pas dépasser 20 caractères.";
     }
+
 
     if (!/^\d{8}$/.test(formData.telephone)) {
       newErrors.telephone = "Téléphone invalide (8 chiffres).";
@@ -78,7 +83,7 @@ const AjouterPersonnel= ({ onSave }) => {
     setApiMessage("");
     
     if (validate()) {
-      setShowConfirmation(true); // Affiche la modale de confirmation avant l'appel API
+      setShowConfirmation(true);
     }
   };
 

@@ -52,17 +52,6 @@ useEffect(() => {
     <div className="container mt-5" style={{ marginLeft: "270px" }}>
       <h2 className="text-center mb-4 fw-bold">Liste des Personnel</h2>
 
-      {/* Zone de recherche */}
-      <div className="d-flex justify-content-center mb-4">
-        <Form.Control
-          type="text"
-          placeholder="Rechercher par nom, prénom, téléphone ou CIN"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ maxWidth: "500px" }}
-        />
-      </div>
-
       {loading && (
         <div className="text-center">
           <Spinner animation="border" />

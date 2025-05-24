@@ -1,0 +1,126 @@
+// 🔁 MODIFICATION d'une cotisation
+export const modifierCotisationExistante = async (req, res) => {
+
+  const {id_cotisation, montant, periode, type_payement, date_payement, num_appartement, annee} = req.body;
+
+  try {
+
+    // Récupérer les infos de cotisation actuelle
+    const infos = await getCotisationInfos(id_cotisation);
+    const {num_appartement: numApp,annee: anneeCotisation,periode: periodeCotisation} = infos;
+    console.log('numApp:', numApp);
+
+    // Si appartement changent, faire les vérifications nécessaires
+    if (numApp != num_appartement) {
+
+        const max_periode = await getMaxPeriode(numApp, annee);
+
+        if (max_periode != periodeCotisation) { 
+          return res.json({
+            status: 'error',
+            message: `Impossible de modifier cette cotisation !`,
+          });
+        }
+
+
+        if (anneeCotisation != annee || periodeCotisation != periode) {
+
+        const maxPeriode = await getMaxPeriode(num_appartement, annee);
+
+        if (maxPeriode != null) {
+
+            if (maxPeriode === 4) {
+                return res.json({
+                    status: 'error',
+                    message: `L'appartement ${num_appartement} à payé déjà les 4 trimestres pour l'année ${annee}.`,
+                });  
+                
+            } else if (periode != maxPeriode + 1) {
+                return res.json({
+                    status: 'error',
+                    message: `Impossible de modifier vers le trimestre ${periode}, elle ne suit pas l’ordre logique de paiement.`,
+                });
+            }
+        }
+
+        const dejaPaye = await isTrimestrePaye(num_appartement, annee, periode);
+            if (dejaPaye) {
+                return res.json({
+                status: 'error',
+                message: `Le trimestre ${periode} est déjà payé pour ${annee}.`,
+                });
+            }
+        }
+    } else if (anneeCotisation != annee || periodeCotisation != periode) {
+
+        const maxPeriode = await getMaxPeriode(num_appartement, annee);
+
+        if (maxPeriode != null) {
+
+            if (maxPeriode === 4) {
+                return res.json({
+                    status: 'error',
+                    message: `L'appartement ${num_appartement} à payé déjà les 4 trimestres pour l'année ${annee}.`,
+                });  
+                
+            } else if (periode != maxPeriode + 1) {
+                return res.json({
+                    status: 'error',
+                    message: `Impossible de modifier vers le trimestre ${periode}, elle ne suit pas l’ordre logique de paiement.`,
+                });
+            }
+        } 
+
+        const dejaPaye = await isTrimestrePaye(num_appartement, annee, periode);
+            if (dejaPaye) {
+                return res.json({
+                status: 'error',
+                message: `Le trimestre ${periode} est déjà payé pour ${annee}.`,
+                });
+            }
+    }
+
+    // Vérifier le montant attendu
+        const appartement = await getAppartementDetails(num_appartement);
+        const { espace_parking } = appartement;
+        const montantAttendu = await getMontantAttendu(annee, espace_parking);
+    
+        if (parseFloat(montant) !== parseFloat(montantAttendu)) {
+          return res.json({
+            status: 'error',
+            message: `Montant incorrect. Attendu : ${montantAttendu}`,
+          });
+        }
+
+    // Mise à jour de la cotisation
+    const cotisationData = {
+      idCotisation: id_cotisation,
+      numeroAppartement: num_appartement,
+      periode,
+      montant,
+      typePayement: type_payement,
+      datePayement: date_payement,
+      annee,
+    };
+
+    const success = await modifierCotisation(cotisationData);
+
+    if (!success) {
+      return res.json({
+        status: 'error',
+        message: 'Erreur lors de la mise à jour.',
+      });
+    }
+
+    res.json({
+      status: 'success',
+      message: 'Cotisation mise à jour avec succès.',
+    });
+  } catch (error) {
+    console.error('Erreur modification cotisation :', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Erreur serveur.',
+    });
+  }
+};

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getListeServicesSansDepense, ajouterDepense } from '../../services/depense/depenseService';
+import ConfAjoutDepense from './ConfAjoutDepense';
 
 const AjouterDepense = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,8 @@ const AjouterDepense = () => {
   const [showModal, setShowModal] = useState(false);
   const [pendingSubmit, setPendingSubmit] = useState(false);
   const [services, setServices] = useState([]);
+  const [message, setMessage] = useState({ type: '', text: '' });
+
 
   const categories = [
     'Taxe financière', 
@@ -87,15 +90,12 @@ const AjouterDepense = () => {
       id_service: formData.id_service, // Assurez-vous que c'est le bon champ
     };
 
-    console.log("FormData envoyé :", formData);
 
     // Appeler la fonction pour ajouter la dépense
     const response = await ajouterDepense(data);
 
     if (response.success) {
-      alert(response.message); // Afficher le message de succès
-      setPendingSubmit(false);
-      setShowModal(false);
+      setMessage({ type: 'success', text: response.message });
       setFormData({
         motif: '',
         categorie: '',
@@ -105,11 +105,14 @@ const AjouterDepense = () => {
         fournisseur: '',
         id_service: '',
       });
+      setTimeout(() => {
+        setMessage({ type: '', text: '' });
+      }, 1500);
     } else {
-      alert(response.message); // Afficher l'erreur en cas de problème
-      setPendingSubmit(false);
-      setShowModal(false);
+      setMessage({ type: 'error', text: response.message });
     }
+    setPendingSubmit(false);
+    setShowModal(false);
   };
 
   const todayDate = new Date().toISOString().split('T')[0];
@@ -117,6 +120,12 @@ const AjouterDepense = () => {
   return (
     <div className="ajouter-prestataire" style={{ width: '600px', margin: '100px auto', padding: '20px', borderRadius: '10px' }}>
       <h2 className="ajout-title">Ajouter une Dépense</h2>
+
+      {message.text && (
+        <div className={`alert ${message.type === 'success' ? 'alert-success' : 'alert-danger'}`} role="alert">
+          {message.text}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} noValidate>
         <div className="form-row">
@@ -244,25 +253,11 @@ const AjouterDepense = () => {
         </div>
       </form>
 
-      {showModal && (
-        <div className="modal show fade d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="modal-dialog">
-            <div className="modal-content rounded-4">
-              <div className="modal-header bg-light">
-                <h5 className="modal-title text-success">Confirmation</h5>
-                <button type="button" className="btn-close" onClick={handleCancel}></button>
-              </div>
-              <div className="modal-body">
-                <p>Êtes-vous sûr de vouloir ajouter cette dépense ?</p>
-              </div>
-              <div className="modal-footer">
-                <button className="btn btn-outline-secondary" onClick={handleCancel}>Annuler</button>
-                <button className="btn btn-success" onClick={handleConfirm}>Confirmer</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfAjoutDepense
+        show={showModal}
+        onCancel={handleCancel}
+        onConfirm={handleConfirm}
+      />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Alert } from "react-bootstrap";
 import { supprimerProprietaire } from "../../services/proprietaire/proprietaireService";
 
@@ -7,13 +7,14 @@ const SuppProprietaire = ({ show, onHide, proprietaireId, onDeleteSuccess }) => 
   const [message, setMessage] = useState(null);
   const [isError, setIsError] = useState(false);
 
-  const handleConfirm = async () => {
-    if (!proprietaireId) {
-      setMessage("ID du propriétaire manquant.");
-      setIsError(true);
-      return;
+  useEffect(() => {
+    if (show) {
+      setMessage(null);    // Réinitialiser à l'ouverture
+      setIsError(false);
     }
+  }, [show]);
 
+  const handleConfirm = async () => {
     setLoading(true);
     const result = await supprimerProprietaire(proprietaireId);
     setLoading(false);
@@ -21,10 +22,8 @@ const SuppProprietaire = ({ show, onHide, proprietaireId, onDeleteSuccess }) => 
     setIsError(!result.success);
 
     if (result.success) {
-      onDeleteSuccess(); // MAJ liste + fermer modale
-      setTimeout(() => {
-        setMessage(null);
-      }, 1500);
+      onDeleteSuccess();
+      onHide();          
     }
   };
 

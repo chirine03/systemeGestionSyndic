@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
+import { fetchModifierCotAnnuelle } from "../../services/cotAnnuelle/cotAnnuelleService";
 
 const ModifierCotAnnuelle = ({ show, handleClose, cotisation }) => {
   const [formData, setFormData] = useState({ ...cotisation });
   const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -11,24 +14,18 @@ const ModifierCotAnnuelle = ({ show, handleClose, cotisation }) => {
 
   const validateForm = () => {
     let newErrors = {};
+    const montantAvec = formData.montant_avec_parking;
+    const montantSans = formData.montant_sans_parking;
 
-    const annee = parseInt(formData.annee);
-    const montantAvec = parseFloat(formData.montant_avec_parking);
-    const montantSans = parseFloat(formData.montant_sans_parking);
-  
-    if (!formData.annee.trim()) {
-      newErrors.annee = "L'année est requise.";
-    } else if (isNaN(annee) || annee < 2000 || annee > 2100) {
-      newErrors.annee = "L'année est invalide !";
-    }
-  
-    if (!formData.montant_avec_parking.trim()) {
+    if (!formData.montant_avec_parking) {
       newErrors.montant_avec_parking = "Le montant avec parking est requis.";
     } else if (isNaN(montantAvec) || montantAvec < 10 || montantAvec > 999) {
       newErrors.montant_avec_parking = "Le montant est invalide !";
+    } else if (montantAvec <= montantSans) {
+      newErrors.montant_avec_parking = "Le montant avec parking doit être supérieur au montant sans parking.";
     }
-  
-    if (!formData.montant_sans_parking.trim()) {
+
+    if (!formData.montant_sans_parking) {
       newErrors.montant_sans_parking = "Le montant sans parking est requis.";
     } else if (isNaN(montantSans) || montantSans < 10 || montantSans > 999) {
       newErrors.montant_sans_parking = "Le montant est invalide !";
@@ -43,24 +40,27 @@ const ModifierCotAnnuelle = ({ show, handleClose, cotisation }) => {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch("http://localhost/my_api/modifierCotAnnuelle.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData),
-      });
+      const response = await fetchModifierCotAnnuelle(formData);
+      console.log(response);
 
-      const result = await response.json();
-      if (result.status === "success") {
-        alert("Cotisation annuelle modifiée avec succès !");
-        handleClose();
-        window.location.reload(); // Rafraîchir la liste
+      if (response.success) {
+        setMessage(response.message || "Cotisation annuelle modifiée avec succès !");
+        setMessageType("success");
+
+        setTimeout(() => {
+          setMessage("");
+          handleClose();
+        }, 1500);
       } else {
-        alert(result.message);
+        setMessage(response.message || "Erreur lors de la modification.");
+        setMessageType("danger");
       }
     } catch (error) {
-      alert("Une erreur est survenue lors de la modification.");
+      setMessage("Une erreur est survenue lors de la modification.");
+      setMessageType("danger");
     }
-  };
+};
+
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -68,6 +68,11 @@ const ModifierCotAnnuelle = ({ show, handleClose, cotisation }) => {
         <Modal.Title>Modifier la Cotisation Annuelle</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {message && (
+          <div className={`alert alert-${messageType}`} role="alert">
+            {message}
+          </div>
+        )}
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Label>Année</Form.Label>
@@ -75,11 +80,8 @@ const ModifierCotAnnuelle = ({ show, handleClose, cotisation }) => {
               type="text"
               name="annee"
               value={formData.annee}
-              onChange={handleChange}
-              isInvalid={!!errors.annee}
               disabled
             />
-            <Form.Control.Feedback type="invalid">{errors.annee}</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -91,7 +93,9 @@ const ModifierCotAnnuelle = ({ show, handleClose, cotisation }) => {
               onChange={handleChange}
               isInvalid={!!errors.montant_avec_parking}
             />
-            <Form.Control.Feedback type="invalid">{errors.montant_avec_parking}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.montant_avec_parking}
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -103,14 +107,16 @@ const ModifierCotAnnuelle = ({ show, handleClose, cotisation }) => {
               onChange={handleChange}
               isInvalid={!!errors.montant_sans_parking}
             />
-            <Form.Control.Feedback type="invalid">{errors.montant_sans_parking}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.montant_sans_parking}
+            </Form.Control.Feedback>
           </Form.Group>
 
           <div className="text-end">
             <Button variant="secondary" onClick={handleClose} className="me-2">
               Annuler
             </Button>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" disabled={messageType === "success"}>
               Enregistrer
             </Button>
           </div>

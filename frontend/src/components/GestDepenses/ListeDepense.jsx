@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
-import { fetchListeDepenses, supprimerDepense } from '../../services/depense/depenseService';
+import { fetchListeDepenses } from '../../services/depense/depenseService';
+import SuppDepense from './SuppDepense';
 
 const ListeDepense = () => {
   const [depenses, setDepenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erreur, setErreur] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [annees, setAnnees] = useState([]);
+  const [anneeSelectionnee, setAnneeSelectionnee] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedDepense, setSelectedDepense] = useState(null);
 
@@ -19,22 +21,17 @@ const ListeDepense = () => {
     const result = await fetchListeDepenses();
     if (result.success) {
       setDepenses(result.data);
+
+      // Extraire les années uniques des dépenses
+      const uniqueAnnees = Array.from(
+        new Set(result.data.map(dep => new Date(dep.date_depense).getFullYear()))
+      ).sort((a, b) => b - a); // trie décroissant
+      setAnnees(uniqueAnnees);
+      setAnneeSelectionnee(''); // reset filtre
     } else {
       setErreur(result.message);
     }
     setLoading(false);
-  };
-
-  const handleSupprimer = async () => {
-    const { id_depense, id_service } = selectedDepense;
-    const result = await supprimerDepense(id_depense, id_service);
-    if (result.success) {
-      // Recharger la liste
-      chargerDepenses();
-      setShowModal(false); // Fermer la modale après suppression
-    } else {
-      alert("Erreur lors de la suppression : " + result.message);
-    }
   };
 
   const handleOpenModal = (depense) => {
@@ -47,27 +44,26 @@ const ListeDepense = () => {
     setSelectedDepense(null);
   };
 
-  const depensesFiltrees = depenses.filter(dep => {
-    const search = searchTerm.toLowerCase();
-    return (
-      dep.categorie?.toLowerCase().includes(search) ||
-      dep.nom_service?.toLowerCase().includes(search) ||
-      dep.reference_facture?.toLowerCase().includes(search) ||
-      new Date(dep.date_depense).toLocaleDateString().includes(search)
-    );
-  });
+  // Filtrer selon l'année sélectionnée
+  const depensesFiltrees = anneeSelectionnee
+    ? depenses.filter(dep => new Date(dep.date_depense).getFullYear().toString() === anneeSelectionnee)
+    : depenses;
 
   return (
     <div className="container mt-4" style={{ marginLeft: "280px" }}>
       <h1 className="mb-5 fw-bold text-center text-primary">Mes des Dépenses</h1>
-      <div className="mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Rechercher par catégorie, service, réf facture ou date..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+
+      <div className="mb-3" style={{ maxWidth: '300px' }}>
+        <select
+          className="form-select"
+          value={anneeSelectionnee}
+          onChange={(e) => setAnneeSelectionnee(e.target.value)}
+        >
+          <option value="">Tous les années</option>
+          {annees.map(annee => (
+            <option key={annee} value={annee}>{annee}</option>
+          ))}
+        </select>
       </div>
 
       {loading && <div className="text-center">Chargement...</div>}
@@ -111,30 +107,20 @@ const ListeDepense = () => {
                   </td>
                 </tr>
               ))}
+              {depensesFiltrees.length === 0 && (
+                <tr><td colSpan="9">Aucune dépense pour cette année.</td></tr>
+              )}
             </tbody>
           </table>
         </div>
       )}
 
-      {/* Modale de confirmation */}
-      {showModal && (
-        <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="confirmationModalLabel">Confirmation de suppression</h5>
-                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleCloseModal}></button>
-              </div>
-              <div className="modal-body">
-                Êtes-vous sûr de vouloir supprimer cette dépense ?
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Annuler</button>
-                <button type="button" className="btn btn-danger" onClick={handleSupprimer}>Supprimer</button>
-              </div>
-            </div>
-          </div>
-        </div>
+      {showModal && selectedDepense && (
+        <SuppDepense
+          depense={selectedDepense}
+          onClose={handleCloseModal}
+          onSuccess={chargerDepenses}
+        />
       )}
     </div>
   );

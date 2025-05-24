@@ -32,7 +32,7 @@ export const getTrimestresPayes = async (num, annee) => {
     'SELECT MAX(periode) AS max_periode FROM cotisation WHERE num_appartement = ? AND annee = ?',
     [num, annee]
   );
-  return rows[0].max_periode; // retourne par exemple 3
+  return rows[0].max_periode;
 };
 
 export const isTrimestrePaye = async (num, annee, periode) => {
@@ -115,7 +115,7 @@ export const getMaxPeriode = async (num_appartement, annee) => {
     [num_appartement, annee]
   );
 
-  return rows[0].maxPeriode; // Retourne juste la valeur max (ou null si aucune cotisation)
+  return rows[0].maxPeriode;
 };
 
 

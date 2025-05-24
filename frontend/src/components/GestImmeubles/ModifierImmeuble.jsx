@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { modifierImmeuble } from "../../services/immeuble/immeubleService"; // ajustez le chemin si besoin
-import ConfirmeModale from "./ConfirmeModale";
 
 const ModifierImmeuble = ({ immeuble, onClose, onUpdated }) => {
   const [formData, setFormData] = useState({ ...immeuble });
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState({});
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [pendingSubmit, setPendingSubmit] = useState(false);
 
   const handleChange = (e) => {
@@ -53,33 +51,27 @@ const ModifierImmeuble = ({ immeuble, onClose, onUpdated }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
-    
+
     if (!validate()) return;
-    
-    setShowConfirmationModal(true);
-  };
 
-  const handleConfirm = async () => {
-    setShowConfirmationModal(false);
     setPendingSubmit(true);
-
     try {
       const result = await modifierImmeuble(formData);
       setMessage(result.message);
 
       if (result.success) {
         onUpdated();
-        // Fermer le modal proprement avec Bootstrap
-      const modal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
-      modal.hide();
+        const modal = bootstrap.Modal.getInstance(document.getElementById("editModal"));
+        modal.hide();
       }
     } catch (error) {
       setMessage("Erreur inattendue lors de la modification de l'immeuble.");
     } finally {
       setPendingSubmit(false);
+      setTimeout(() => setMessage(""), 1000);
     }
   };
 
@@ -91,16 +83,13 @@ const ModifierImmeuble = ({ immeuble, onClose, onUpdated }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Modifier Immeuble</h5>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="modal"
-              onClick={onClose}
-            ></button>
+            <button type="button" className="btn-close" data-bs-dismiss="modal" onClick={onClose}></button>
           </div>
+
           {message && (
-              <div className="alert alert-info mt-3 text-center">{message}</div>
-            )}
+            <div className="alert alert-info mt-3 text-center">{message}</div>
+          )}
+
           <div className="modal-body">
             <div className="row g-3">
               {[
@@ -136,16 +125,14 @@ const ModifierImmeuble = ({ immeuble, onClose, onUpdated }) => {
                 {errors.description && <div className="invalid-feedback">{errors.description}</div>}
               </div>
             </div>
-
-            
           </div>
 
           <div className="modal-footer">
             <button className="btn btn-secondary" data-bs-dismiss="modal" onClick={onClose}>
               Annuler
             </button>
-            <button 
-              className="btn btn-primary" 
+            <button
+              className="btn btn-primary"
               onClick={handleSubmit}
               disabled={pendingSubmit}
             >
@@ -154,15 +141,6 @@ const ModifierImmeuble = ({ immeuble, onClose, onUpdated }) => {
           </div>
         </div>
       </div>
-
-        <ConfirmeModale
-        show={showConfirmationModal}
-        onHide={() => setShowConfirmationModal(false)}
-        onConfirm={handleConfirm}
-        title="Confirmer la modification"
-        message="Êtes-vous sûr de vouloir modifier cet immeuble ?"
-      />
-
     </div>
   );
 };

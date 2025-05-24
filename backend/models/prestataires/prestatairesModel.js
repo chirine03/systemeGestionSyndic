@@ -10,28 +10,85 @@ export const getAllPrestataires = async () => {
 
 
 // Vérifier si un prestataire avec les mêmes informations existe déjà
-export const checkPrestataireExists1 = async (email, telephone, num_matricule, fax, id_prestataire) => {
-    const [rows] = await connection.execute(
-      `SELECT email, telephone, num_matricule, fax FROM PrestataireService 
-       WHERE email = ? OR telephone = ? OR num_matricule = ? OR fax = ?`,
-      [email, telephone, num_matricule, fax]
-    );
-  
-    return rows.length > 0 ? rows[0] : null;
-  };  
+export const checkPrestataireExists1 = async ({ email, telephone, num_matricule, fax, id_prestataire }) => {
+  let query = `SELECT email, telephone, num_matricule, fax FROM PrestataireService WHERE `;
+  const conditions = [];
+  const params = [];
+
+  if (email) {
+    conditions.push("email = ?");
+    params.push(email);
+  }
+  if (telephone) {
+    conditions.push("telephone = ?");
+    params.push(telephone);
+  }
+  if (num_matricule) {
+    conditions.push("num_matricule = ?");
+    params.push(num_matricule);
+  }
+  if (fax) {
+    conditions.push("fax = ?");
+    params.push(fax);
+  }
+
+  if (conditions.length === 0) return null;
+
+  // exclusion du prestataire à modifier
+  query += `(${conditions.join(" OR ")}) AND id_prestataire != ?`;
+  params.push(id_prestataire);
+
+  const [rows] = await connection.execute(query, params);
+
+  if (rows.length > 0) {
+    const existing = rows[0];
+    if (email && existing.email === email) return 'Un prestataire avec cet email existe déjà.';
+    if (telephone && existing.telephone === telephone) return 'Un prestataire avec ce numéro de téléphone existe déjà.';
+    if (num_matricule && existing.num_matricule === num_matricule) return 'Un prestataire avec ce matricule existe déjà.';
+    if (fax && existing.fax === fax) return 'Un prestataire avec ce fax existe déjà.';
+  }
+  return null;
+};
 
 
-  // Vérifier si un prestataire avec les mêmes informations existe déjà
-  export const checkPrestataireExists2 = async (email, telephone, num_matricule, fax, id_prestataire) => {
-    const [rows] = await connection.execute(
-      `SELECT email, telephone, num_matricule, fax FROM PrestataireService 
-       WHERE (email = ? OR telephone = ? OR num_matricule = ? OR fax = ?)
-       AND id_prestataire != ?`,
-      [email, telephone, num_matricule, fax, id_prestataire]
-    );
-  
-    return rows.length > 0 ? rows[0] : null;
-  };
+// Vérifier si un prestataire avec les mêmes informations existe déjà
+export const checkPrestataireExists2 = async ({ email, telephone, num_matricule, fax }) => {
+  let query = `SELECT email, telephone, num_matricule, fax FROM PrestataireService WHERE `;
+  const conditions = [];
+  const params = [];
+
+  if (email) {
+    conditions.push("email = ?");
+    params.push(email);
+  }
+  if (telephone) {
+    conditions.push("telephone = ?");
+    params.push(telephone);
+  }
+  if (num_matricule) {
+    conditions.push("num_matricule = ?");
+    params.push(num_matricule);
+  }
+  if (fax) {
+    conditions.push("fax = ?");
+    params.push(fax);
+  }
+
+  if (conditions.length === 0) return null;
+
+  query += conditions.join(" OR ");
+
+  const [rows] = await connection.execute(query, params);
+
+  if (rows.length > 0) {
+    const existing = rows[0];
+    if (email && existing.email === email) return 'Un prestataire avec cet email existe déjà.';
+    if (telephone && existing.telephone === telephone) return 'Un prestataire avec ce numéro de téléphone existe déjà.';
+    if (num_matricule && existing.num_matricule === num_matricule) return 'Un prestataire avec ce matricule existe déjà.';
+    if (fax && existing.fax === fax) return 'Un prestataire avec ce fax existe déjà.';
+  } return null;
+};
+
   
 // Requête : insertion d’un nouveau prestataire
 export const insertPrestataire = async (prestataireData) => {

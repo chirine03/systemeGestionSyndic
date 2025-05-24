@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getServicesByPrestataire, deleteService } from '../../services/prestataires/servicesService';
+import { getServicesByPrestataire } from '../../services/prestataires/servicesService';
 import './AjouterService.css';
 import SuppService from './SuppService';
 
@@ -10,39 +10,25 @@ const PrestServicesListe = ({ prestataireId, onClose }) => {
   const [serviceToDelete, setServiceToDelete] = useState(null);
 
   useEffect(() => {
-    const fetchServices = async () => {
-      const result = await getServicesByPrestataire(prestataireId);
-
-      if (result.success) {
-        const sortedData = result.data.sort((a, b) => a.paye === "non" ? -1 : 1);
-        setServices(sortedData);
-      } else {
-        setError(result.message);
-      }
-
-      setLoading(false);
-    };
-
     fetchServices();
   }, [prestataireId]);
 
-  const handleConfirmDelete = async () => {
-    if (serviceToDelete) {
-      const result = await deleteService(serviceToDelete);
-      if (result.success) {
-        alert("Service supprimé avec succès.");
-        // Optionnel : tu peux aussi rafraîchir la liste ici si besoin
-      } else {
-        alert("Erreur lors de la suppression du service.");
-      }
-      setServiceToDelete(null);
+  const fetchServices = async () => {
+    setLoading(true);
+    const result = await getServicesByPrestataire(prestataireId);
+    if (result.success) {
+      const sortedData = result.data.sort((a, b) => a.paye === "non" ? -1 : 1);
+      setServices(sortedData);
+    } else {
+      setError(result.message);
     }
+    setLoading(false);
   };
 
   return (
     <>
       {!serviceToDelete && (
-        <div className="modal show d-block" tabIndex="1">
+        <div className="modal show d-block" tabIndex="1" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
           <div className="modal-dialog modal-lg">
             <div className="modal-content liste-width">
               <div className="modal-header">
@@ -77,19 +63,16 @@ const PrestServicesListe = ({ prestataireId, onClose }) => {
                           <td>{service.type}</td>
                           <td>{service.date_intervention}</td>
                           <td>{service.reference_facture}</td>
-                          <td>{service.montant}DTN</td>
+                          <td>{service.montant} DTN</td>
                           <td>{service.raison_sociale} - {service.bloc}</td>
                           <td>{service.description}</td>
                           <td style={{ color: service.paye === "oui" ? "green" : "red", fontWeight: "bold" }}>
                             {service.paye === "oui" ? "Oui" : "Non"}
                           </td>
                           <td>
-                            <button 
+                            <button
                               className="btn btn-danger"
-                              onClick={() => {
-                                setServiceToDelete(service.id_service);
-                                onClose(); // 👈 ferme la modale des services dès qu’on clique "Supprimer"
-                              }}
+                              onClick={() => setServiceToDelete(service.id_service)}
                             >
                               Supprimer
                             </button>
@@ -110,8 +93,12 @@ const PrestServicesListe = ({ prestataireId, onClose }) => {
 
       {serviceToDelete && (
         <SuppService
-          onConfirm={handleConfirmDelete}
+          serviceId={serviceToDelete}
           onCancel={() => setServiceToDelete(null)}
+          onSuccess={() => {
+            setServiceToDelete(null);
+            fetchServices();
+          }}
         />
       )}
     </>

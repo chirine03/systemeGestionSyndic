@@ -88,14 +88,16 @@ const SettingsForm = ({ show, handleClose, idPersonne }) => {
       return false;
     }
 
-    const dateNais = new Date(formData.date_nais);
-    const today = new Date();
-    const age = today.getFullYear() - dateNais.getFullYear();
-    const mois = today.getMonth() - dateNais.getMonth();
-    if (age < 18 || (age === 18 && mois < 0)) {
-      showMessage("Vous devez avoir au moins 18 ans.", "error");
-      return false;
-    }
+
+    if (!formData.date_nais) {
+    showMessage("La date de naissance est requise.", "error");
+    return false;
+  }
+
+  if (new Date(formData.date_nais) > new Date()) {
+    showMessage("La date de naissance ne peut pas être dans le futur.", "error");
+    return false;
+  }
 
     if (formData.mot_de_passe && !passwordPattern.test(formData.mot_de_passe)) {
       showMessage(

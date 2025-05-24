@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
 import {FaEdit, FaTrash } from 'react-icons/fa';
+import {fetchListeCotAnnuelle, fetchSupprimerCotAnnuelle } from "../../services/cotAnnuelle/cotAnnuelleService";
 import ModifierCotAnnuelle from "./ModifierCotAnnuelle";
+import SuppConfirmeCotAnnuelle from "./SuppConfirmeCotAnnuelle";
 
 const ListeCotAnnuelle = () => {
   const [cotisations, setCotisations] = useState([]);
@@ -12,14 +14,14 @@ const ListeCotAnnuelle = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [cotisationToEdit, setCotisationToEdit] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [anneeToDelete, setAnneeToDelete] = useState(null);
 
   const fetchCotisations = async () => {
     try {
-      const response = await fetch("http://localhost/my_api/ListeCotAnnuelle.php");
-      const result = await response.json();
-
-      if (result.status === "success") {
-        setCotisations(result.cotisations);
+      const response = await fetchListeCotAnnuelle();
+      if (response.success) {
+        setCotisations(response.cotannuelle);
       } else {
         setError("Erreur lors du chargement des cotisations annuelles.");
       }
@@ -30,37 +32,38 @@ const ListeCotAnnuelle = () => {
     }
   };
 
-  const handleDelete = async (annee) => {
-    const isConfirmed = window.confirm(
-      "Voulez-vous vraiment supprimer cette cotisation annuelle ?"
-    );
-    if (!isConfirmed) return;
+  const handleDelete = (annee) => {
+    setAnneeToDelete(annee);
+    setShowConfirmModal(true);
+  };
 
+  const confirmDelete = async (annee) => {
     try {
-      const response = await fetch("http://localhost/my_api/SuppCotAnnuelle.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          annee: annee,
-        }),
-      });
-      const result = await response.json();
-
-      if (result.status === "success") {
+      const result = await fetchSupprimerCotAnnuelle(annee);
+      console.log("Résultat de la suppression :", result);
+      if (result.success) {
         setMessageType("success");
-        setMessage("Cotisation annuelle supprimée avec succès !");
-        setCotisations(cotisations.filter((cotisation) => cotisation.annee !== annee));
+        setMessage(result.message);
+        setCotisations(cotisations.filter((c) => c.annee !== annee));
+        setTimeout(() => {
+          setMessage("");
+        }, 1500);
       } else {
         setMessageType("danger");
         setMessage(result.message);
+        setTimeout(() => {
+          setMessage("");
+        }, 1500);
       }
     } catch (error) {
       setMessageType("danger");
       setMessage("Erreur lors de la suppression.");
+    } finally {
+      setShowConfirmModal(false);
+      setAnneeToDelete(null);
     }
   };
+
 
   const handleEdit = (annee) => {
     const selected = cotisations.find((c) => c.annee === annee);
@@ -145,6 +148,14 @@ const ListeCotAnnuelle = () => {
           cotisation={cotisationToEdit}
         />
       )}
+
+      <SuppConfirmeCotAnnuelle
+      show={showConfirmModal}
+      handleClose={() => setShowConfirmModal(false)}
+      handleConfirm={confirmDelete}
+      annee={anneeToDelete}
+    />
+
     </div>
   );
 };

@@ -97,15 +97,7 @@ export const ajouterNouvelleCotisation = async (req, res) => {
 
 // 🔁 MODIFICATION d'une cotisation
 export const modifierCotisationExistante = async (req, res) => {
-  const {
-    id_cotisation,
-    montant,
-    periode,
-    type_payement,
-    date_payement,
-    num_appartement,
-    annee,
-  } = req.body;
+  const {id_cotisation, montant, periode, type_payement, date_payement, num_appartement, annee} = req.body;
 
   try {
     // Vérifier le montant attendu
@@ -122,27 +114,23 @@ export const modifierCotisationExistante = async (req, res) => {
 
     // Récupérer les infos de cotisation actuelle
     const infos = await getCotisationInfos(id_cotisation);
-    const {
-      num_appartement: numApp,
-      annee: anneeCotisation,
-      periode: periodeCotisation,
-    } = infos;
-
+    const {num_appartement: numApp,annee: anneeCotisation,periode: periodeCotisation} = infos; //
+    console.log('numApp:', numApp);
     // Si période/appartement/année changent, faire les vérifications nécessaires
     if (
-      numApp != num_appartement ||
-      anneeCotisation != annee ||
-      periodeCotisation != periode
-    ) {
+      numApp != num_appartement || anneeCotisation != annee || periodeCotisation != periode ) {
 
-      const maxPeriode = await getTrimestresPayes(num_appartement, annee);
-      if (periode > maxPeriode || periode < maxPeriode) {
-        return res.json({
-          status: 'error',
-          message: `Impossible de modifier vers le trimestre ${periode}, elle ne suit pas l’ordre logique de paiement.`,
-        });
+      if (numApp != num_appartement) {
+
+        const max_periode = await getMaxPeriode(numApp, annee);
+
+        if (max_periode != periodeCotisation) { 
+          return res.json({
+            status: 'error',
+            message: `Impossible de modifier cette cotisation !`,
+          });
+        }
       }
-
 
       const dejaPaye = await isTrimestrePaye(num_appartement, annee, periode);
       if (dejaPaye) {
@@ -150,6 +138,28 @@ export const modifierCotisationExistante = async (req, res) => {
           status: 'error',
           message: `Le trimestre ${periode} est déjà payé pour ${annee}.`,
         });
+      }
+
+      const maxPeriode = parseInt(await getMaxPeriode(num_appartement, annee)); // ou Number(...)
+
+      console.log('maxPeriode:', maxPeriode);
+      console.log('maxPeriode + 1:', maxPeriode+1);
+      console.log('periode:', periode);
+
+      if (maxPeriode != null) {
+
+        if (maxPeriode === 4) {
+          return res.json({
+            status: 'error',
+            message: `L'appartement ${num_appartement} à payé déjà les 4 trimestres pour l'année ${annee}.`,
+            });  
+                
+        } else if (periode != maxPeriode + 1) {
+            return res.json({
+              status: 'error',
+              message: `Impossible de modifier vers le trimestre ${periode}, elle ne suit pas l’ordre logique de paiement.`,
+            });
+        }
       }
     }
 

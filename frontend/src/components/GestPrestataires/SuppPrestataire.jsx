@@ -1,33 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { deletePrestataire } from '../../services/prestataires/prestatairesService';
 import { FaTrash } from 'react-icons/fa';
 
-const SuppPrestataire = ({ 
-  show, 
-  onClose, 
-  prestataireId, 
-  onDeleteSuccess 
-}) => {
+const SuppPrestataire = ({show, onClose, prestataireId, onDeleteSuccess }) => {
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-    const [id_prestataire, setid_prestataire] = useState(prestataireId);
+  const [id_prestataire, setid_prestataire] = useState(null);
 
+  useEffect(() => {
+    setid_prestataire(prestataireId);
+  }, [prestataireId]);
+ 
   const handleDelete = async () => {
     setIsDeleting(true);
     setErrorMessage(null);
-    
+
     try {
       const result = await deletePrestataire(id_prestataire);
+
       if (result.success) {
-        onDeleteSuccess(result.message);
-      } else {
-        setErrorMessage(result.message);
-        setIsDeleting(false);
-        setid_prestataire(null);
+        setErrorMessage(null);
         setTimeout(() => {
+          onDeleteSuccess(result.message);
           onClose();
         }, 1500);
-        
+      } else {
+        setErrorMessage(result.message);
+        setTimeout(() => {
+          setErrorMessage(null);
+          onClose(); 
+        }, 1500);
       }
     } catch (error) {
       setErrorMessage('Une erreur est survenue lors de la suppression');
@@ -35,6 +38,8 @@ const SuppPrestataire = ({
       setIsDeleting(false);
     }
   };
+
+ 
 
   return (
     <div 
@@ -52,13 +57,17 @@ const SuppPrestataire = ({
               disabled={isDeleting}
             ></button>
           </div>
+
           <div className="modal-body">
             {errorMessage ? (
-              <div className="alert alert-danger">{errorMessage}</div>
+              <div className={`alert ${errorMessage.includes('succès') ? 'alert-success' : 'alert-danger'}`}>
+                {errorMessage}
+              </div>
             ) : (
               <p>Êtes-vous sûr de vouloir supprimer ce prestataire ?</p>
             )}
           </div>
+
           <div className="modal-footer">
             <button 
               type="button" 

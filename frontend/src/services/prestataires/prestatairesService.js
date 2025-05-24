@@ -51,7 +51,7 @@ export const deletePrestataire = async (id_prestataire) => {
     if (result.success) {
       return { success: true, message: 'Prestataire supprimé avec succès.' };
     } else {
-      return { success: false, message: 'Erreur lors de la suppression du prestataire.' };
+      return { success: false, message: result.message || 'Erreur lors de la suppression du prestataire.' };
     }
   } catch (error) {
     console.error('Erreur lors de la suppression du prestataire:', error);

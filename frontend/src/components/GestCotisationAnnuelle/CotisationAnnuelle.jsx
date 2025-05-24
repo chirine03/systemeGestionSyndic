@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./CotisationAnnuelle.css";
+import {fetchAjouterCotAnnuelle} from "../../services/cotAnnuelle/cotAnnuelleService";
 
 const CotisationAnnuelle = () => {
   const [formData, setFormData] = useState({
@@ -19,24 +20,26 @@ const CotisationAnnuelle = () => {
 
   const validateForm = () => {
     let newErrors = {};
-  
-    const annee = parseInt(formData.annee);
-    const montantAvec = parseFloat(formData.montant_avec_parking);
-    const montantSans = parseFloat(formData.montant_sans_parking);
-  
-    if (!formData.annee.trim()) {
+
+    const annee = formData.annee.trim();
+    const montantAvec = formData.montant_avec_parking.trim();
+    const montantSans = formData.montant_sans_parking.trim();
+
+    if (!formData.annee) {
       newErrors.annee = "L'année est requise.";
     } else if (isNaN(annee) || annee < 2000 || annee > 2100) {
       newErrors.annee = "L'année est invalide !";
     }
   
-    if (!formData.montant_avec_parking.trim()) {
+    if (!formData.montant_avec_parking) {
       newErrors.montant_avec_parking = "Le montant avec parking est requis.";
     } else if (isNaN(montantAvec) || montantAvec < 10 || montantAvec > 999) {
       newErrors.montant_avec_parking = "Le montant est invalide !";
+    } else if (montantAvec <= montantSans) {
+      newErrors.montant_avec_parking = "Le montant avec parking doit être supérieur au montant sans parking.";
     }
-  
-    if (!formData.montant_sans_parking.trim()) {
+
+    if (!formData.montant_sans_parking) {
       newErrors.montant_sans_parking = "Le montant sans parking est requis.";
     } else if (isNaN(montantSans) || montantSans < 10 || montantSans > 999) {
       newErrors.montant_sans_parking = "Le montant est invalide !";
@@ -55,14 +58,10 @@ const CotisationAnnuelle = () => {
     if (!isConfirmed) return;
 
     try {
-      const response = await fetch("http://localhost/my_api/AjouterCotAnnuelle.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData),
-      });
+      const result = await fetchAjouterCotAnnuelle(formData);
+      console.log("Réponse du serveur :", result);
 
-      const result = await response.json();
-      if (result.status === "success") {
+      if (result.success) {
         setMessageType("success");
         setMessage(result.message);
         setFormData({
@@ -81,7 +80,7 @@ const CotisationAnnuelle = () => {
 
     setTimeout(() => {
       setMessage("");
-    }, 3000);
+    }, 1500);
   };
 
   const handleCancel = () => {

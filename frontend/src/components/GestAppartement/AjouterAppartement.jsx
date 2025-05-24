@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {fetchInfos, ajouterAppartement} from '../../services/appartement/appartementService.js';
 import './AjouterAppartement.css';
+import ConfirmAjoutApp from './ConfirmAjoutApp.jsx'; 
+
 
 const AjouterAppartement = () => {
   const [form, setForm] = useState({
@@ -18,6 +20,8 @@ const AjouterAppartement = () => {
   const [immeubles, setImmeubles] = useState([]);
   const [proprietaires, setProprietaires] = useState([]);
   const [message, setMessage] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [pendingSubmit, setPendingSubmit] = useState(false);
 
 
   useEffect(() => {
@@ -90,19 +94,37 @@ const AjouterAppartement = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (valider()) {
-      console.log("✅ Données valides :", form);
-      // Envoi des données au backend
+      setShowModal(true);
+      setPendingSubmit(true);
+    }
+  };
+
+  const confirmerAjout = async () => {
+    setShowModal(false);
+    if (pendingSubmit) {
       const response = await ajouterAppartement(form);
       if (response.success) {
         setMessage({ text: response.message, type: 'success' });
+        setForm({
+          num_appartement: '',
+          nbr_chambre: '',
+          superficie: '',
+          etage: '',
+          espace_parking: '',
+          description: '',
+          id_immeuble: '',
+          id_personne: ''
+        });
       } else {
         setMessage({ text: response.message, type: 'error' });
       }
+      setPendingSubmit(false);
     }
   };
+
   
 
   const handleChange = (e) => {
@@ -227,6 +249,12 @@ const AjouterAppartement = () => {
           <button type="submit" className="btn btn-ajouter">Ajouter</button>
         </div>
       </form>
+      <ConfirmAjoutApp
+      show={showModal}
+      onHide={() => setShowModal(false)}
+      onConfirm={confirmerAjout}
+    />
+
     </div>
   );
 };

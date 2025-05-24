@@ -7,7 +7,7 @@ const ConfirmeAjoutProp = ({ show, onConfirm, onCancel, isSubmitting }) => {
     <div className="modal fade show" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
-          <div className="modal-header bg-primary text-white">
+          <div className="modal-header text-white">
             <h5 className="modal-title">Confirmer l'ajout</h5>
             <button 
               type="button" 

@@ -190,19 +190,24 @@ const modifierPersonnel = ({ show, onHide, personnel, onUpdate }) => {
 
           {/* Poste */}
           <Form.Group className="mb-3">
-        <Form.Label>Poste</Form.Label>
-        <Form.Select
-            name="poste"
-            value={formData.poste}
-            onChange={handleChange}
-            isInvalid={!!errors.poste}
-        >
-            <option value="">-- Sélectionner un poste --</option>
-            <option value="Gardien">Gardien</option>
-            <option value="Femme de ménage">Femme de ménage</option>
-        </Form.Select>
-        <Form.Control.Feedback type="invalid">{errors.poste}</Form.Control.Feedback>
-        </Form.Group>
+            <Form.Label>Poste</Form.Label>
+              <Form.Select
+                name="post"
+                value={formData.post}
+                onChange={handleChange}
+                isInvalid={!!errors.post}
+              >
+                <option value="">-- Sélectionner un poste --</option>
+                <option value="Gardien">Gardien</option>
+                <option value="Femme de ménage">Femme de ménage</option>
+                {formData.post &&
+                  !["Gardien", "Femme de ménage"].includes(formData.post) && (
+                    <option value={formData.post}>{formData.post}</option>
+                  )}
+              </Form.Select>
+
+            <Form.Control.Feedback type="invalid">{errors.post}</Form.Control.Feedback>
+          </Form.Group>
 
 
           {/* Salaire */}
