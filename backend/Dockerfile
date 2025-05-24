@@ -7,11 +7,14 @@ WORKDIR /app
 # Copie les fichiers
 COPY . .
 
+# Va dans le dossier backend
+WORKDIR /app/backend
+
 # Installe les dépendances
 RUN npm install
 
-# Expose le port
+# Expose le port (change-le si ton app utilise un autre)
 EXPOSE 3001
 
 # Lance le serveur
-CMD ["node", "index.js"]
+CMD ["node", "api/index.js"]
