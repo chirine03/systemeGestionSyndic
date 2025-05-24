@@ -64,6 +64,6 @@ app.use('/api/statistiques', statistiquesRoutes);
 export const handler = serverless(app);
 
 const PORT = 3001;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0',() => {
   console.log(`✅ Serveur backend démarré sur le port ${PORT}`);
 });
