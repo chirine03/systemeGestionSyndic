@@ -3,7 +3,6 @@ FROM node:18
 WORKDIR /app
 
 COPY . .
-COPY .env ./
 
 WORKDIR /app/backend
 
