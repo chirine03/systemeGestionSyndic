@@ -2,7 +2,7 @@ FROM node:18
 
 WORKDIR /app
 
-COPY backend ./backend
+COPY . .
 COPY .env ./
 
 WORKDIR /app/backend
