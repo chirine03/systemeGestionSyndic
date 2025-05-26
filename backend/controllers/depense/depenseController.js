@@ -12,18 +12,30 @@ import { getServicesSansDepense,
 export const getListeServicesSansDepense = async (req, res) => {
   try {
     const services = await getServicesSansDepense();
-    console.log("Services sans dépense récupérés :", services);
 
-    //if (!services || services.length === 0) {
-      //return res.json({ success: false, message: 'Aucun service disponible sans dépense.' });
-    //}
+    const servicesFormatted = services.map(service => {
+      if (!service.date_intervention) return { ...service, date_intervention: null };
 
-    return res.json({ success: true, services });
+      const d = new Date(service.date_intervention);
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0'); // mois commence à 0
+      const year = d.getFullYear();
+
+      return {
+        ...service,
+        date_intervention: `${day}/${month}/${year}`
+      };
+    });
+
+    console.log("Services sans dépense récupérés :", servicesFormatted);
+
+    return res.json({ success: true, services: servicesFormatted });
   } catch (error) {
     console.error("Erreur lors de la récupération des services sans dépense :", error);
     return res.status(500).json({ success: false, message: 'Erreur serveur.' });
   }
 };
+
 
 // Ajouter une nouvelle dépense
 export const addDepense = async (req, res) => {

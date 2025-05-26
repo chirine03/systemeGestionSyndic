@@ -36,6 +36,7 @@ const AjouterDepense = () => {
   useEffect(() => {
     const fetchServices = async () => {
       const res = await getListeServicesSansDepense();
+      console.log ("Liste des services sans dépense :", res);
       if (res.success) {
         setServices(res.data);
       }
@@ -48,26 +49,42 @@ const AjouterDepense = () => {
     setErrors({ ...errors, [e.target.name]: '' });
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    const montant = parseFloat(formData.montant);
-    const today = new Date().toISOString().split('T')[0];
+const validateForm = () => {
+  const newErrors = {};
+  const montant = parseFloat(formData.montant);
+  const today = new Date().toISOString().split('T')[0];
 
-    if (!formData.motif) newErrors.motif = 'Champ requis';
-    if (!formData.categorie) newErrors.categorie = 'Champ requis';
-    if (!formData.montant) newErrors.montant = 'Champ requis';
-    else if (montant < 0 || montant > 1000000) newErrors.montant = 'Montant invalide';
-    if (!formData.date) newErrors.date = 'Champ requis';
-    else if (formData.date > today) newErrors.date = 'Date future interdite';
-    if (!formData.type_paiement) newErrors.type_paiement = 'Champ requis';
-    if (formData.id_service === '' || formData.id_service === undefined) {
-      newErrors.id_service = 'Champ requis';
+  if (!formData.motif) newErrors.motif = 'Champ requis';
+  if (!formData.categorie) newErrors.categorie = 'Champ requis';
+  if (!formData.montant) newErrors.montant = 'Champ requis';
+  else if (montant < 0 || montant > 1000000) newErrors.montant = 'Montant invalide';
+  if (!formData.date) newErrors.date = 'Champ requis';
+  else if (formData.date > today) newErrors.date = 'Date future interdite';
+
+  // Nouvelle validation date paiement >= date intervention
+  if (formData.id_service) {
+    const selectedService = services.find(s => s.id_service === formData.id_service);
+    if (selectedService && selectedService.date_intervention) {
+      // Format attendu : jj/mm/aaaa, donc on convertit en Date
+      const [day, month, year] = selectedService.date_intervention.split('/');
+      const interventionDate = new Date(`${year}-${month}-${day}`); // ISO format pour Date
+      const paiementDate = new Date(formData.date);
+
+      if (paiementDate < interventionDate) {
+        newErrors.date = `La date de paiement doit être après ou égale à la date d'intervention (${selectedService.date_intervention})`;
+      }
     }
-    
+  }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  if (!formData.type_paiement) newErrors.type_paiement = 'Champ requis';
+  if (formData.id_service === '' || formData.id_service === undefined) {
+    newErrors.id_service = 'Champ requis';
+  }
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
+
 
   const handleSubmit = (e) => {
     e.preventDefault();

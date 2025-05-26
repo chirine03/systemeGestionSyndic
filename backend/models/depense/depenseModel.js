@@ -7,7 +7,8 @@ export const getServicesSansDepense = async () => {
         s.nom AS nom_service,
         s.reference_facture,
         s.montant,
-        s.id_service
+        s.id_service,
+        s.date_intervention
       FROM 
         service s
       JOIN 
