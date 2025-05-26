@@ -60,6 +60,10 @@ app.use('/api/personnel', personnelRoutes);
 app.use('/api/statistiques', statistiquesRoutes);
 
 
+app.get('/', (req, res) => {
+  res.send('✅ Backend API is working !');
+});
+
 
 export const handler = serverless(app);
 
