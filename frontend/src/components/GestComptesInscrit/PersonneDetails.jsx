@@ -1,6 +1,5 @@
 // src/components/ComptesInscrit/PersonneDetails.jsx
 import React from 'react';
-
 const PersonneDetails = ({ personne, onClose }) => {
   if (!personne) return null;
 

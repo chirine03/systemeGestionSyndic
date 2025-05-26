@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    setIsLoggingOut(true); // 👈 active l'état
+    setIsLoggingOut(true);
 
     localStorage.removeItem("id_personne");
     localStorage.removeItem("role");
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
     setRole(null);
 
     setTimeout(() => {
-      setIsLoggingOut(false); // 👈 désactive
+      setIsLoggingOut(false);
       navigate("/");
     }, 1000);
   };

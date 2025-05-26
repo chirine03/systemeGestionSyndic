@@ -12,13 +12,14 @@ import {
   Legend,
 } from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+import ChartDataLabels from "chartjs-plugin-datalabels";
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels);
 
 const TotalDepensesParImmeuble = () => {
   const [data, setData] = useState([]);
   const [annees, setAnnees] = useState([]);
   const [selectedAnnee, setSelectedAnnee] = useState(null);
-  const [selectedType, setSelectedType] = useState("total"); // total, payee, non_payee
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -42,36 +43,37 @@ const TotalDepensesParImmeuble = () => {
   if (loading) return <p>Chargement...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
-  // filtrer les données par année sélectionnée
+  // Filtrer et trier les données par année sélectionnée et montant total décroissant
   const filteredData = selectedAnnee
     ? data.filter((item) => item.annee === selectedAnnee)
     : data;
 
-  const immeubles = filteredData.map((item) => item.immeuble);
+  const sortedData = [...filteredData].sort((a, b) => b.total_depense - a.total_depense);
 
-  const totalData = filteredData.map((item) => Number(item.total_depense));
-  const payeeData = filteredData.map((item) => Number(item.depense_payee));
-  const nonPayeeData = filteredData.map((item) => Number(item.depense_non_payee));
+  const immeubles = sortedData.map((item) => item.immeuble);
+  const totalData = sortedData.map((item) => Number(item.total_depense));
+  const payeeData = sortedData.map((item) => Number(item.depense_payee));
+  const nonPayeeData = sortedData.map((item) => Number(item.depense_non_payee));
 
   const chartData = {
     labels: immeubles,
     datasets: [
-      selectedType === "total" && {
+      {
         label: "Dépense Totale",
         data: totalData,
-        backgroundColor: "#6495ED",
+        backgroundColor: "#7ea9e1", // bleu pastel
       },
-      selectedType === "payee" && {
+      {
         label: "Dépense Payée",
         data: payeeData,
-        backgroundColor: "#28a745",
+        backgroundColor: "#87d37c", // vert pastel
       },
-      selectedType === "non_payee" && {
+      {
         label: "Dépense Non Payée",
         data: nonPayeeData,
-        backgroundColor: "#dc3545",
+        backgroundColor: "#f07c7c", // rouge pastel
       },
-    ].filter(Boolean),
+    ],
   };
 
   const options = {
@@ -80,12 +82,18 @@ const TotalDepensesParImmeuble = () => {
       legend: { position: "top" },
       title: {
         display: true,
-        text: `Dépenses par Immeuble - ${selectedAnnee}`,
       },
       tooltip: {
         callbacks: {
           label: (context) => `${context.dataset.label}: ${context.raw} DT`,
         },
+      },
+      datalabels: {
+        anchor: "end",
+        align: "top",
+        formatter: (val) => `${val} DT`,
+        font: { weight: "bold" },
+        color: "#000",
       },
     },
     scales: {
@@ -100,16 +108,17 @@ const TotalDepensesParImmeuble = () => {
   };
 
   return (
-    <div className="card shadow-sm p-4 bg-white rounded" style={{ maxWidth: 600, margin: "auto" }}>
+    <div className="card shadow-sm p-4 bg-white rounded justify-content-center" style={{ maxWidth: 650, height: "420px", margin: "auto" }}>
+      <h5 className="text-center mb-3 fs-6">Répartition des Dépenses par Immeuble - {selectedAnnee}</h5>
       <div style={{ marginBottom: 16 }}>
-        <label htmlFor="annee" style={{ marginRight: 8 }}>
+        <label htmlFor="annee" style={{ marginRight: 8, fontWeight: "bold" }}>
           Filtrer par année :
         </label>
         <select
           id="annee"
           value={selectedAnnee || ""}
           onChange={(e) => setSelectedAnnee(Number(e.target.value))}
-          style={{ padding: "4px 8px", marginRight: 16 }}
+          style={{ padding: "4px 8px", borderRadius: 4 }}
         >
           {annees.map((annee) => (
             <option key={annee} value={annee}>
@@ -117,21 +126,9 @@ const TotalDepensesParImmeuble = () => {
             </option>
           ))}
         </select>
-
-        <label htmlFor="type">Type de dépense :</label>
-        <select
-          id="type"
-          value={selectedType}
-          onChange={(e) => setSelectedType(e.target.value)}
-          style={{ padding: "4px 8px", marginLeft: 8 }}
-        >
-          <option value="total">Totale</option>
-          <option value="payee">Payée</option>
-          <option value="non_payee">Non payée</option>
-        </select>
       </div>
 
-      <Bar data={chartData} options={options} height={250} width={380}/>
+      <Bar data={chartData} options={options} height={350} width={600} />
     </div>
   );
 };

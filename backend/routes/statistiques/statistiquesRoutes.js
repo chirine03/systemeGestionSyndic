@@ -6,7 +6,8 @@ import {
     TauxDepensePrestataire,
     TotalDepensesParImmeuble,
     EvolDepense,
-    DepensePayeNonPaye
+    DepensePayeNonPaye,
+    TauxRecouvrement
 } from '../../controllers/statistiques/statistiqueController.js';
 
 const router = express.Router();
@@ -26,5 +27,7 @@ router.get('/total-depenses-immeuble',TotalDepensesParImmeuble)
 router.get('/evol-depense',EvolDepense)
 
 router.get('/depense-paye-non-paye',DepensePayeNonPaye)
+
+router.get('/taux-recouvrement',TauxRecouvrement)
 
 export default router;

@@ -59,9 +59,9 @@ const ListeComptes = () => {
   }
 
   return (
-    <div className="comptes-container" style={{ marginLeft: "400px" }}>
+    <div className="comptes-container center" style={{ marginLeft: "250px" }}>
       <div className="comptes-header">
-        <h2 className="comptes-title">Liste des Comptes</h2>
+        <h1 className="comptes-title">Liste des Comptes</h1>
         <div className="filter-section">
           <label htmlFor="roleFilter" className="filter-label">Filtrer par rôle</label>
           <select

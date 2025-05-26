@@ -94,7 +94,7 @@ const ListePrestataire = () => {
   const closeServicesModal = () => setShowServicesModal(false);
 
   if (loading) {
-    return <div className="text-center mt-5" style={{ marginLeft: "280px" }}>Chargement des prestataires...</div>;
+    return <div className="text-center mt-5" style={{ marginLeft: "200px" }}>Chargement des prestataires...</div>;
   }
 
   if (error) {
@@ -102,7 +102,7 @@ const ListePrestataire = () => {
   }
 
   return (
-    <div style={{ marginLeft: "280px" }} className="container">
+    <div style={{ marginLeft: "200px" }} className="container">
       <h2 className="my-4 text-center">Liste des Prestataires</h2>
       <div className="d-flex justify-content-end mb-3">
         <button onClick={openServiceModal} className="btn btn-success rounded-pill ">

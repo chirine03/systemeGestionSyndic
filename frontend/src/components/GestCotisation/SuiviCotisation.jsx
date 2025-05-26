@@ -72,7 +72,7 @@ const SuiviCotisation = () => {
   };
 
   return (
-    <div className="container my-5" style={{ marginLeft: "270px" }}>
+    <div className="container my-5" style={{ marginLeft: "200px" }}>
       <h1 className=" mb-5 fw-bold text-center">Suivi des Cotisations</h1>
       <SuiviGlobal />
       <Row className="align-items-center g-3 mb-4 justify-content-center">

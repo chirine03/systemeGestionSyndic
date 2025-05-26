@@ -50,7 +50,7 @@ const ListeDepense = () => {
     : depenses;
 
   return (
-    <div className="container mt-4" style={{ marginLeft: "280px" }}>
+    <div className="container mt-4" style={{ marginLeft: "200px" }}>
       <h1 className="mb-5 fw-bold text-center text-primary">Mes des Dépenses</h1>
 
       <div className="mb-3" style={{ maxWidth: '300px' }}>

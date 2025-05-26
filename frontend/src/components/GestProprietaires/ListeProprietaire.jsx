@@ -49,7 +49,7 @@ useEffect(() => {
   });
 
   return (
-    <div className="container mt-5" style={{ marginLeft: "270px" }}>
+    <div className="container mt-5" style={{ marginLeft: "200px" }}>
       <h2 className="text-center mb-4 fw-bold">Liste des Propriétaires</h2>
 
       {/* Zone de recherche */}

@@ -106,7 +106,7 @@ const ListeCotisation = () => {
   }, [numeroAppartementFilter, periodeFilter, cotisations]);
 
   return (
-    <div className="container mt-5" style={{ marginLeft: "280px" }}>
+    <div className="container mt-5" style={{ marginLeft: "200px" }}>
       <h2 className="text-center mb-5 fw-bold">Liste des Cotisations</h2>
 
       {error && <p className="text-danger text-center">{error}</p>}

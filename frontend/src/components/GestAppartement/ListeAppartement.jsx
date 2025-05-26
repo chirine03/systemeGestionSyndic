@@ -56,7 +56,7 @@ const ListeAppartement = () => {
   };
 
   return (
-    <div className="container mt-4" style={{ marginLeft: "280px" }}>
+    <div className="container mt-4" style={{ marginLeft: "200px" }}>
       <h2 className="text-center mb-4 fw-bold">Liste des Appartements</h2>
 
       {/* ✅ Zone de recherche */}

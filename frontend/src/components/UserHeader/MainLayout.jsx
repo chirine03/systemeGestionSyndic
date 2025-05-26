@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import UserProfile from "./Userprofile";
-import SettingsForm from "./SettingsForm";
-import NavBar from "./Navbar";
-import LogoutModal from "./logoutModal";
+import UserProfile from "../GestProfile/Userprofile.jsx";
+import SettingsForm from "../GestProfile/SettingsForm.jsx";
+import NavBar from "../Navbar/Navbar.jsx";
+import LogoutModal from "../GestProfile/logoutModal.jsx";
 import { useAuth } from "../../context/AuthContex.jsx"; // Assurez-vous que le chemin est correct
 
 const MainLayout = ({ idPersonne }) => {

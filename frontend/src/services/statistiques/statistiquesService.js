@@ -10,7 +10,6 @@ export const fetchTauxPaiements = async () => {
     });
 
     const result = await response.json();
-    console.log("taux des paiement :", result);
 
     if (result.status === "success") {
       return { success: true, data: result.data };
@@ -33,7 +32,6 @@ export const fetchRecetteActuelle = async () => {
     });
 
     const result = await response.json();
-    console.log("recette actuelle :", result);
 
     if (result.status === "success") {
       return { success: true, data: result.data };
@@ -56,7 +54,6 @@ export const fetchTotalDepense = async () => {
     });
 
     const result = await response.json();
-    console.log("total depense :", result);
 
     if (result.status === "success") {
       return { success: true, data: result.data };
@@ -80,7 +77,6 @@ export const fetchTauxDepensePrestataire = async () => {
     });
 
     const result = await response.json();
-    console.log("total depense :", result);
 
     if (result.status === "success") {
       return { success: true, data: result.data };
@@ -103,7 +99,6 @@ export const fetchTotalDepensesParImmeuble = async () => {
     });
 
     const result = await response.json();
-    console.log("total depense :", result);
 
     if (result.status === "success") {
       return { success: true, data: result.data };
@@ -128,7 +123,6 @@ export const fetchEvolDepense = async () => {
     });
 
     const result = await response.json();
-    console.log("total depense :", result);
 
     if (result.status === "success") {
       return { success: true, data: result.data };
@@ -152,7 +146,6 @@ export const fetchDepensePayeNonPaye = async () => {
     });
 
     const result = await response.json();
-    console.log("total depense :", result);
 
     if (result.status === "success") {
       return { success: true, data: result.data };
@@ -164,3 +157,26 @@ export const fetchDepensePayeNonPaye = async () => {
     return { success: false, message: "Erreur réseau. Veuillez réessayer plus tard." };
   }
 };
+
+export const fetchTauxRecouvrement = async () => {
+  try {
+    const response = await fetch(`${API_URL}/taux-recouvrement`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const result = await response.json();
+    console.log("taux recouvrement :", result.status);
+
+    if (result.status === "success") {
+      return { success: true, data: result.data };
+    } else {
+      return { success: false, message: result.message || "Erreur inconnue" };
+    }
+  } catch (error) {
+    console.error("Erreur lors du fetch TauxRecouvrement:", error);
+    return { success: false, message: "Erreur réseau. Veuillez réessayer plus tard." };
+  }
+}

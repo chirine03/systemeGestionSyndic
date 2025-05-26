@@ -145,3 +145,48 @@ export const getDepensePayeNonPaye = async () => {
   `);
   return rows;
 };
+
+
+export const getTauxRecouvrement = async () => {
+  const [rows] = await connection.execute(`
+    SELECT 
+      i.id_immeuble,
+      i.raison_sociale,
+      ca.annee,
+
+      COUNT(DISTINCT CASE WHEN a.espace_parking = 'oui' THEN a.num_appartement END) AS nbr_appart_avec_parking,
+      COUNT(DISTINCT CASE WHEN a.espace_parking = 'non' THEN a.num_appartement END) AS nbr_appart_sans_parking,
+
+      (
+        COUNT(DISTINCT CASE WHEN a.espace_parking = 'oui' THEN a.num_appartement END) * ca.montant_avec_parking * 12 +
+        COUNT(DISTINCT CASE WHEN a.espace_parking = 'non' THEN a.num_appartement END) * ca.montant_sans_parking * 12
+      ) AS montant_total_annuel_a_payer,
+
+      SUM(COALESCE(cot.montant, 0)) AS montant_total_paye,
+
+      (
+        COUNT(DISTINCT CASE WHEN a.espace_parking = 'oui' THEN a.num_appartement END) * ca.montant_avec_parking * 12 +
+        COUNT(DISTINCT CASE WHEN a.espace_parking = 'non' THEN a.num_appartement END) * ca.montant_sans_parking * 12
+      ) - SUM(COALESCE(cot.montant, 0)) AS reste_a_payer,
+
+      ROUND(
+        IFNULL(
+          SUM(COALESCE(cot.montant, 0)) / 
+          (
+            COUNT(DISTINCT CASE WHEN a.espace_parking = 'oui' THEN a.num_appartement END) * ca.montant_avec_parking * 12 +
+            COUNT(DISTINCT CASE WHEN a.espace_parking = 'non' THEN a.num_appartement END) * ca.montant_sans_parking * 12
+          ),
+          0
+        ) * 100, 2
+      ) AS taux_paiement
+
+    FROM immeuble i
+    JOIN appartement a ON a.id_immeuble = i.id_immeuble
+    JOIN cotisation_annuelle ca ON 1=1
+    LEFT JOIN cotisation cot ON cot.num_appartement = a.num_appartement AND cot.annee = ca.annee
+
+    GROUP BY i.id_immeuble, ca.annee;
+  `);
+
+  return rows;
+};

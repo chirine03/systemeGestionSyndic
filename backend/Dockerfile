@@ -4,8 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-WORKDIR /app/backend
-
 RUN npm install
 
 EXPOSE 3001

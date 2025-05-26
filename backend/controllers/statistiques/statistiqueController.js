@@ -5,7 +5,9 @@ import {
   getTauxDepensePrestataire, 
   getTotalDepensesParImmeuble,
   getEvolDepense,
-  getDepensePayeNonPaye} from '../../models/statistiques/statistiquesModel.js'
+  getDepensePayeNonPaye,
+  getTauxRecouvrement
+} from '../../models/statistiques/statistiquesModel.js'
 
 export const TauxPaiementParImmeubleEtAnnee = async (req, res) => {
   try {
@@ -131,3 +133,19 @@ export const DepensePayeNonPaye = async (req, res) => {
   }
 };
 
+export const TauxRecouvrement = async (req, res) => {
+  try {
+    const rep = await getTauxRecouvrement();
+    console.log("TauxRecouvrement response:", rep);
+    res.json({
+      status: "success",
+      data: rep,
+    });
+  } catch (error) {
+    console.error("Erreur dans TauxRecouvrement :", error);
+    res.status(500).json({
+      status: "error",
+      message: "Erreur : " + error.message,
+    });
+  }
+}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import Bienvenu from "./Bienvenu";
 import MainLayout from "../../components/UserHeader/MainLayout";
-import Sidebar from "./Sidebar"; 
+import Sidebar from "../../components/Sidebar/Sidebar"; 
 import ListeCotisation from "../../components/GestCotisation/ListeCotisation"; 
 import AjouterCotisation from "../../components/GestCotisation/AjouterCotisation";
 import SuiviCotisation from "../../components/GestCotisation/SuiviCotisation"; 

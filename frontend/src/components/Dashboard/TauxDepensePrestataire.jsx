@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchTauxDepensePrestataire } from "../../services/statistiques/statistiquesService";
 import { Bar } from "react-chartjs-2";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,7 +12,13 @@ import {
   Legend,
 } from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels);
+
+const getBarColor = (value) => {
+  if (value >= 75) return "#28a745"; // vert
+  if (value >= 50) return "#ffc107"; // orange
+  return "#f07c7c"; // rouge
+};
 
 const TauxDepensePrestataire = () => {
   const [data, setData] = useState([]);
@@ -47,14 +54,16 @@ const TauxDepensePrestataire = () => {
   const labels = filteredData.map((item) => item.prestataire);
   const pourcentageData = filteredData.map((item) => Number(item.pourcentage));
   const depensesData = filteredData.map((item) => Number(item.total_depenses_services));
+  const backgroundColors = pourcentageData.map(getBarColor);
 
   const chartData = {
     labels,
     datasets: [
       {
-        label: "Pourcentage (%)",
+        label: "Taux de Dépense (%)",
         data: pourcentageData,
-        backgroundColor: "rgb(130, 202, 184)",
+        backgroundColor: backgroundColors,
+        borderRadius: 6,
       },
     ],
   };
@@ -63,64 +72,79 @@ const TauxDepensePrestataire = () => {
     indexAxis: "y",
     responsive: true,
     plugins: {
-      legend: { position: "top" },
-      title: { display: true, text: "Taux de Dépense par Prestataire" },
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: `Taux de Dépense par Prestataire (${selectedAnnee})`,
+        font: { size: 16 },
+      },
       tooltip: {
         callbacks: {
-          label: function (context) {
-            const index = context.dataIndex;
-            const montant = depensesData[index];
-            const pourcent = context.parsed.x;
-            return `Pourcentage: ${pourcent}% - Montant: ${montant} DT`;
+          label: (context) => {
+            const i = context.dataIndex;
+            return ` ${context.raw}% | ${depensesData[i]} DT`;
           },
+        },
+      },
+      datalabels: {
+        anchor: "end",
+        align: "right",
+        formatter: (val) => `${val}%`,
+        color: "#000",
+        font: {
+          weight: "bold",
         },
       },
     },
     scales: {
       x: {
         beginAtZero: true,
-        max: 100, // Pourcentage max 100%
+        max: 100,
         ticks: {
           callback: (val) => val + "%",
         },
+        title: { display: true, text: "Pourcentage" },
       },
       y: {
-        beginAtZero: true,
+        title: { display: true, text: "Prestataire" },
       },
     },
-    elements: {
-    bar: {
-      barThickness: 10, 
+    animation: {
+      duration: 1000,
+      easing: "easeOutQuint",
     },
-  },
+    elements: {
+      bar: {
+        barThickness: 14,
+      },
+    },
   };
 
   return (
-    <div className="card shadow-sm p-3 bg-white rounded" style={{ maxWidth: 600, marginLeft: "160px"}}>
-    <div style={{ marginBottom: 16 }}>
-        <label
-        htmlFor="annee-select"
-        style={{ marginRight: 8, fontWeight: "bold" }}
-        >
-        Filtrer par année :
-        </label>
+    <div className="card shadow-sm p-4 bg-white rounded mt-4 mx-auto" style={{ maxWidth: "800px" }}>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h5 className="mb-0">Taux de Dépense par Prestataire en {selectedAnnee}</h5>
         <select
-        id="annee-select"
-        value={selectedAnnee || ""}
-        onChange={(e) => setSelectedAnnee(Number(e.target.value))}
-        style={{ padding: "4px 8px", borderRadius: 4 }}
+          className="form-select w-auto"
+          value={selectedAnnee || ""}
+          onChange={(e) => setSelectedAnnee(Number(e.target.value))}
         >
-        {annees.map((annee) => (
+          {annees.map((annee) => (
             <option key={annee} value={annee}>
-            {annee}
+              {annee}
             </option>
-        ))}
+          ))}
         </select>
-    </div>
+      </div>
 
-    <Bar data={chartData} options={options} height={300} width={400} />
+      {filteredData.length === 0 ? (
+        <p className="text-center text-muted">Aucune donnée enregistrée pour cette année.</p>
+      ) : (
+        <Bar data={chartData} options={options} />
+      )}
     </div>
-
   );
 };
 
