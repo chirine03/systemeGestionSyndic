@@ -108,7 +108,7 @@ const TotalDepensesParImmeuble = () => {
   };
 
   return (
-    <div className="card shadow-sm p-4 bg-white rounded justify-content-center" style={{ maxWidth: 650, height: "420px", margin: "auto" }}>
+    <div className="card shadow-sm p-4 bg-white rounded justify-content-center" style={{ maxWidth: 650, height: "480px", margin: "auto" }}>
       <h5 className="text-center mb-3 fs-6">Répartition des Dépenses par Immeuble - {selectedAnnee}</h5>
       <div style={{ marginBottom: 16 }}>
         <label htmlFor="annee" style={{ marginRight: 8, fontWeight: "bold" }}>

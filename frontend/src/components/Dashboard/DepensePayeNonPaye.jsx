@@ -92,7 +92,7 @@ const DepensePayeNonPaye = () => {
         font: { size: 16 },
       },
     },
-    cutout: "70%",
+    cutout: "60%",
   };
 
   return (

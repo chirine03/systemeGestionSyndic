@@ -27,8 +27,8 @@ const AjouterPrestataire = () => {
       newErrors.raison_sociale = "Utilisez uniquement lettres, chiffres et espaces.";
     }
 
-    if (formData.num_matricule && !/^[a-zA-Z0-9]{8,20}$/.test(formData.num_matricule)) {
-      newErrors.num_matricule = "Matricule invalide (10-20 caractères).";
+    if (formData.num_matricule && !/^[a-zA-Z0-9]{6,20}$/.test(formData.num_matricule)) {
+      newErrors.num_matricule = "Matricule invalide (6-20 caractères).";
     }
    if (formData.telephone && !/^\d{8}$/.test(formData.telephone)) {
       newErrors.telephone = "Téléphone doit avoir exactement 8 chiffres.";

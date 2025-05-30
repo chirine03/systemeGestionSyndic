@@ -104,7 +104,7 @@ const validateForm = () => {
       montant: parseFloat(formData.montant),
       date: formData.date,
       type_paiement: formData.type_paiement,
-      id_service: formData.id_service, // Assurez-vous que c'est le bon champ
+      id_service: formData.id_service,
     };
 
 
@@ -122,6 +122,10 @@ const validateForm = () => {
         fournisseur: '',
         id_service: '',
       });
+      const res = await getListeServicesSansDepense();
+        if (res.success) {
+          setServices(res.data);
+      }
       setTimeout(() => {
         setMessage({ type: '', text: '' });
       }, 1500);
