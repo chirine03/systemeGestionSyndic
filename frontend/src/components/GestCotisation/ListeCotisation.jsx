@@ -67,26 +67,26 @@ const ListeCotisation = () => {
     try {
       const result = await supprimerCotisation(id_cotisation, periode, num_appartement, annee);
       if (result.status === "success") {
-        setSuccessMessage("✅ Cotisation supprimée avec succès !");
-        setErrorMessage("");
+        setSuccessMessage(result.message);
         setCotisations((prev) =>
           prev.filter((cotisation) => cotisation.id_cotisation !== id_cotisation)
         );
         setTimeout(() => {
+          setSuccessMessage("");
           setShowConfirmModal(false);
           setCotisationToDelete(null);
-        }, 1500);
+
+        }, 500);
       } else {
         setErrorMessage(result.message || "❌ Erreur lors de la suppression.");
-        setSuccessMessage("");
         setTimeout(() => {
+          setErrorMessage("");
           setShowConfirmModal(false);
           setCotisationToDelete(null);
         }, 300);
       }
     } catch (error) {
       setErrorMessage("❌ Une erreur est survenue lors de la suppression.");
-      setSuccessMessage("");
     }
   };
 

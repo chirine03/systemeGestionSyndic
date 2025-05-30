@@ -64,7 +64,7 @@ const ListeAppartement = () => {
         <input
           type="text"
           className="form-control"
-          placeholder="Rechercher par numéro, superficie, chambres ou nom du propriétaire..."
+          placeholder="Rechercher par numéro ou nom du propriétaire..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />

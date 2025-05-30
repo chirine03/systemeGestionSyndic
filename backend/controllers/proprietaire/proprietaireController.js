@@ -45,7 +45,7 @@ export const modifierProprietaire = async (req, res) => {
           : res.json({ success: false, message: "Échec de la mise à jour." });
       }
   
-      const existe = await checkExisteInfos(cin, telephone);
+      const existe = await checkExisteInfos(cin, telephone, id_personne);
   
       if (existe) {
         return res.json({ success: false, message: "CIN ou téléphone déjà utilisé." });

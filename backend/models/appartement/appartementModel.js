@@ -7,6 +7,7 @@ export const getListeAppartement = async () => {
       a.description, a.id_immeuble, a.id_personne, p.nom AS nom_personne, p.prenom AS prenom_personne
     FROM appartement a, personne p
     WHERE a.id_personne = p.id_personne
+    group by a.num_appartement
   `);
 
   return rows;
@@ -58,7 +59,7 @@ export const UpdateAppartement = async (num_appartement, appartement) =>{
 
 
 export const deleteAppartement = async (num_appartement) => {
-  console.log("num_appartement", num_appartement); // Debugging line
+  console.log("num_appartement", num_appartement);
   const [result] = await connection.execute(
     'DELETE FROM appartement WHERE num_appartement = ?', [num_appartement]
   );

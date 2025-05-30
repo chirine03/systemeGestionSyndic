@@ -29,11 +29,11 @@ export const getInfosProprietaire = async (id_personne) => {
     return rows[0];
 };
 
-export const checkExisteInfos = async (cin, telephone) => {
+export const checkExisteInfos = async (cin, telephone, id_personne) => {
     const [rows] = await connection.execute(
         `SELECT p.id_personne
          FROM personne p
-         WHERE p.cin = ? OR p.telephone = ?`, [cin, telephone]
+         WHERE (p.cin = ? OR p.telephone = ?) AND p.id_personne != ?`, [cin, telephone, id_personne]
     );
     return rows.length > 0;
 };

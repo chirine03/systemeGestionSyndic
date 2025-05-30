@@ -98,7 +98,9 @@ const modifierPersonnel = ({ show, onHide, personnel, onUpdate }) => {
       onUpdate(formData);
       onHide();
     }
-
+    setTimeout(() => {
+      setMessage(null);
+    }, 1500);
     setIsSubmitting(false);
   };
 
@@ -194,14 +196,14 @@ const modifierPersonnel = ({ show, onHide, personnel, onUpdate }) => {
               <Form.Select
                 name="post"
                 value={formData.post}
-                onChange={handleChange}
+                onChange={handleChange} 
                 isInvalid={!!errors.post}
               >
                 <option value="">-- Sélectionner un poste --</option>
-                <option value="Gardien">Gardien</option>
-                <option value="Femme de ménage">Femme de ménage</option>
+                <option value="gardien">gardien</option>
+                <option value="femme de ménage">femme de ménage</option>
                 {formData.post &&
-                  !["Gardien", "Femme de ménage"].includes(formData.post) && (
+                  !["gardien", "femme de ménage"].includes(formData.post) && (
                     <option value={formData.post}>{formData.post}</option>
                   )}
               </Form.Select>
