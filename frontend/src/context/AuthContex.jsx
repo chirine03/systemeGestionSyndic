@@ -6,7 +6,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [idPersonne, setIdPersonne] = useState(null);
   const [role, setRole] = useState(null);
-  const [isLoggingOut, setIsLoggingOut] = useState(false); // 👈 ajout
+  const [isLoggingOut, setIsLoggingOut] = useState(false); 
   const navigate = useNavigate();
 
   useEffect(() => {

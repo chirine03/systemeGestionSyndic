@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/authentification/authService";
-import { useAuth } from "../../context/AuthContex"; // Import du contexte d'authentification
+import { useAuth } from "../../context/AuthContex"; 
 
-const LoginForm = ({ onClose, switchToRegister }) => {
+const LoginForm = ({ switchToRegister }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -11,7 +11,7 @@ const LoginForm = ({ onClose, switchToRegister }) => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const { login } = useAuth();  // Utilisation du contexte pour le login
+  const { login } = useAuth();  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,17 +46,11 @@ const LoginForm = ({ onClose, switchToRegister }) => {
         setTimeout(() => {
           const routesMap = {
             proprietaire: "/proprietaire",
-            locataire: "/locataire",
             responsable: "/responsable",
-            admin: "/admin",
-            employe: "/employe",
           };
-
           const route = routesMap[role];
           if (route) {
             navigate(route, { state: { idPersonne: id_personne } });
-          } else {
-            setError("Rôle non reconnu.");
           }
         }, 500);
       } else {

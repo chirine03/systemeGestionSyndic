@@ -35,7 +35,7 @@ const MainLayout = ({ idPersonne }) => {
       <LogoutModal
         show={showLogoutModal}
         onCancel={() => setShowLogoutModal(false)}
-        onConfirm={logout} // ← Appelle logout depuis le contexte
+        onConfirm={logout}
       />
     </div>
   );

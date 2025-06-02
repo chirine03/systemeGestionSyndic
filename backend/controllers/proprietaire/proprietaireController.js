@@ -1,11 +1,11 @@
-import {getAllProprietaire, addProprietaire, getInfosProprietaire, checkExisteInfos, updateProprietaire, getPropAppartement, deleteProprietaire } from '../../models/proprietaire/proprietaireModel.js';
+import {getAllProprietaire, addProprietaire, getInfosProprietaire, checkExisteInfos, checkAddExistInfos, updateProprietaire, getPropAppartement, deleteProprietaire } from '../../models/proprietaire/proprietaireModel.js';
 
 export const ajouterProprietaire = async (req, res) => {
     const { nom, prenom, adresse, telephone, cin, date_nais } = req.body;
   
     try {
-      const existe = await checkExisteInfos(cin, telephone);
-  
+      const existe = await checkAddExistInfos(cin, telephone);
+
       if (existe) {
         return res.json({ success: false, message: "CIN ou téléphone déjà utilisé." });
       }

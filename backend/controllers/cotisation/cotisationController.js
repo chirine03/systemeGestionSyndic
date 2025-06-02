@@ -140,7 +140,7 @@ export const modifierCotisationExistante = async (req, res) => {
         });
       }
 
-      const maxPeriode = parseInt(await getMaxPeriode(num_appartement, annee)); // ou Number(...)
+      const maxPeriode = parseInt(await getMaxPeriode(num_appartement, annee)); 
 
       console.log('maxPeriode:', maxPeriode);
       console.log('maxPeriode + 1:', maxPeriode+1);

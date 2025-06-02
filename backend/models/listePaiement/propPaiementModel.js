@@ -3,7 +3,7 @@ import connection from '../../config/connexion.js';
 export const getPaiementData = async (id_personne) => {
   try {
     const [rows] = await connection.execute(`
-      SELECT 
+     SELECT 
         a.num_appartement,
         a.nbr_chambre,
         a.superficie,
@@ -15,11 +15,15 @@ export const getPaiementData = async (id_personne) => {
         c.periode,
         c.type_payement,
         c.date_payement,
-        c.annee
+        c.annee,
+        p.nom,
+        p.prenom
       FROM 
         appartement a
       LEFT JOIN 
         cotisation c ON a.num_appartement = c.num_appartement
+      JOIN 
+        personne p ON a.id_personne = p.id_personne
       WHERE 
         a.id_personne = ?
     `, [id_personne]);

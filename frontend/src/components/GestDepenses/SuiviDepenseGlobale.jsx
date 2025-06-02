@@ -11,17 +11,30 @@ const SuiviDepenseGlobale = () => {
   const [selectedAnnee, setSelectedAnnee] = useState("");
   const [resultatsFiltres, setResultatsFiltres] = useState([]);
 
-  useEffect(() => {
-    const loadData = async () => {
-      const response = await fetchSuiviDepenseGlobal();
-      if (response.success) {
-        setData(response.data);
-        setImmeubles([...new Set(response.data.map(item => item.id_immeuble))]);
-        setAnnees([...new Set(response.data.map(item => item.annee))]);
-      }
-    };
-    loadData();
-  }, []);
+
+useEffect(() => {
+  const loadData = async () => {
+    const response = await fetchSuiviDepenseGlobal();
+    if (response.success) {
+      setData(response.data);
+
+      // Extraire immeubles uniques par ID
+      const immeublesUniques = Array.from(
+        new Map(response.data.map(item => [item.id_immeuble, {
+          id_immeuble: item.id_immeuble,
+          raison_sociale: item.raison_sociale
+        }])).values()
+      );
+
+      setImmeubles(immeublesUniques);
+
+      // Extraire années uniques
+      setAnnees([...new Set(response.data.map(item => item.annee))]);
+    }
+  };
+  loadData();
+}, []);
+
 
   useEffect(() => {
     if (selectedImmeuble || selectedAnnee) {
@@ -49,9 +62,11 @@ const SuiviDepenseGlobale = () => {
               onChange={(e) => setSelectedImmeuble(e.target.value)}
             >
               <option value="">-- Choisir un immeuble --</option>
-              {immeubles.map(id => (
-                <option key={id} value={id}>Immeuble {id}</option>
-              ))}
+                {immeubles.map((immeuble) => (
+                  <option key={immeuble.id_immeuble} value={immeuble.id_immeuble}>
+                    {immeuble.raison_sociale}
+                  </option>
+                ))}
             </Form.Select>
           </Col>
           <Col>
@@ -71,7 +86,7 @@ const SuiviDepenseGlobale = () => {
 
       {resultatsFiltres.length > 0 && resultatsFiltres.map((res, i) => (
         <div key={i} className="summary-container">
-          <h5 className="summary-title">Résumé - Immeuble {res.id_immeuble}, Année {res.annee}</h5>
+          <h5 className="summary-title">Résumé - Immeuble {res.raison_sociale}, Année {res.annee}</h5>
           <div className="d-flex justify-content-between align-items-center summary-text">
             <p><strong className="text-primary">Dépense Totale :</strong> {res.depense_totale} DT</p>
             <p><strong className="text-success">Services Payés :</strong> {res.totale_services_payes} DT</p>

@@ -4,7 +4,7 @@ import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 
 const AuthModal = ({ show, onClose, isRegister, switchToRegister, switchToLogin }) => {
-  if (!show) return null; // Prevent rendering if `show` is false
+  if (!show) return null;
 
   return (
     <div className="auth-modal">

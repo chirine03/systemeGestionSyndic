@@ -20,7 +20,7 @@ const ListePrestataire = () => {
   const [showServicesModal, setShowServicesModal] = useState(false);
   const [prestataireIdForServices, setPrestataireIdForServices] = useState(null);
 
-   useEffect(() => {
+   
     const fetchPrestataires = async () => {
       try {
         const result = await getListePrestataire();
@@ -35,7 +35,7 @@ const ListePrestataire = () => {
         setLoading(false);
       }
     };
-
+  useEffect(() => {
     fetchPrestataires();
   }, []);
 
@@ -66,19 +66,19 @@ const ListePrestataire = () => {
     }, 1500);
   }; 
   
-  const handleSaveEdit = (updatedPrestataire) => {
-    if (!updatedPrestataire || !updatedPrestataire.id_prestataire) {
-      console.error("Prestataire mis à jour invalide :", updatedPrestataire);
-      return;
-    }
-  
-    setPrestataires((prev) =>
-      prev.map((p) =>
+  const handleSaveEdit = async (updatedPrestataire) => {
+    setPrestataires(prev =>
+      prev.map(p =>
         p.id_prestataire === updatedPrestataire.id_prestataire ? updatedPrestataire : p
       )
     );
+
     setShowEditModal(false);
+    setSelectedPrestataire(null);
+
+    await fetchPrestataires();
   };
+
 
   // Gestion de la modale de service
   const openServiceModal = () => setShowServiceModal(true);

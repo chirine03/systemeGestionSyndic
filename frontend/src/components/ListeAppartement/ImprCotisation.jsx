@@ -2,7 +2,7 @@ import React from "react";
 import { FaBuilding } from "react-icons/fa";
 import "./ImprCotisation.css";
 
-const ImprCotisation = ({ data, onClose }) => {
+const ImprCotisation = ({ data, num_appartement,onClose }) => {
   const handlePrint = () => {
     const content = document.getElementById("print-cotisation");
     if (!content) return;
@@ -118,7 +118,7 @@ const ImprCotisation = ({ data, onClose }) => {
 
         <div className="recap-section">
           <p><strong>Nom du Propriétaire :</strong> {data.nom} {data.prenom}</p>
-          <p><strong>Appartement N° :</strong> {data.num_appartement}</p>
+          <p><strong>Appartement N° :</strong> {num_appartement}</p>
           <p><strong>Montant :</strong> {data.montant} DT</p>
           <p><strong>Période :</strong> {data.periode}</p>
           <p><strong>Année :</strong> {data.annee}</p>

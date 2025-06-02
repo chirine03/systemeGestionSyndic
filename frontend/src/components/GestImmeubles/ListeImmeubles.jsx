@@ -57,7 +57,7 @@ const ListeImmeubles = () => {
   };
 
   const confirmEdit = () => {
-    getImmeubles (); // rafraîchir la liste
+    getImmeubles ();
     setSuccessMessage("Immeuble modifié avec succès.");
     setSelectedImmeuble(null);
   };

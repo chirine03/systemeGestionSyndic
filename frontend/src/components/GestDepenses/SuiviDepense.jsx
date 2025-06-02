@@ -8,7 +8,7 @@ const SuiviDepense = () => {
       <h2 className="mt-4 mb-4">Suivi Dépense Globale</h2>
       <SuiviDepenseGlobale />
 
-      <h4 className="mt-5 mb-4">Résumé Global des Dépenses par Service</h4>
+      <h4 className="mt-5 mb-4">Résumé Global des Dépenses par Prestataire</h4>
       <SuiviServiceGlobale /> {/* ✅ Appel du composant service */}
     </Container>
   );

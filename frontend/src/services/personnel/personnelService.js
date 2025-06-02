@@ -27,6 +27,7 @@ export const fetchListePersonnel = async () => {
 
 export const ajouterPersonnel = async (personnelData) => {
   try {
+    console.log("Données à ajouter :", personnelData);
     const response = await fetch(`${API_URL}/ajouter-personnel`, {
       method: "POST",
       headers: {

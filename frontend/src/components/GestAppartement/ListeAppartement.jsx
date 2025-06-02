@@ -101,6 +101,7 @@ const ListeAppartement = () => {
                     className="btn btn-sm btn-primary me-2"
                     onClick={() => handleModifierClick(app)}
                   >Modifier</button>
+                  
                 </td>
               </tr>
             ))

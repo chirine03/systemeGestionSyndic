@@ -52,7 +52,7 @@ const PrestServicesListe = ({ prestataireId, onClose }) => {
                         <th>Montant</th>
                         <th>Immeuble</th>
                         <th>Description</th>
-                        <th>À Payé</th>
+                        <th>Payé</th>
                         <th>Actions</th>
                       </tr>
                     </thead>

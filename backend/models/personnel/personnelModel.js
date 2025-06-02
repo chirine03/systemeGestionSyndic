@@ -17,13 +17,17 @@ export const addPersonnel = async (personnel) => {
   const { nom, prenom, adresse, telephone, cin, date_nais, post, salaire } = personnel;
 
   // Insertion dans la table personne
-  const [result] = await connection.execute(
+  await connection.execute(
     `INSERT INTO personne (nom, prenom, adresse, telephone, cin, date_nais, role) 
-     VALUES (?, ?, ?, ?, ?, ?, 'employe')`,
-    [nom, prenom, adresse, telephone, cin, date_nais]
+    VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    [nom, prenom, adresse, telephone, cin, date_nais, 'employe']
   );
 
-  const id_personne = result.insertId;
+  const [result] = await connection.execute(
+    `SELECT LAST_INSERT_ID() AS id_personne`
+  );
+
+  const id_personne = result[0].id_personne;
 
   // Insertion dans la table personnel avec l'ID généré
   await connection.execute(
@@ -43,7 +47,16 @@ export const getInfosPersonnel = async (id_personne) => {
     return rows[0];
 };
 
-export const checkExisteInfos = async (cin, telephone, id_personne) => {
+export const checkAddExistInfos = async (cin, telephone) => {
+    const [rows] = await connection.execute(
+        `SELECT p.id_personne
+         FROM personne p
+         WHERE (p.cin = ? OR p.telephone = ?) `, [cin, telephone]
+    );
+    return rows.length > 0;
+};
+
+export const checkExistInfos = async (cin, telephone, id_personne) => {
     const [rows] = await connection.execute(
         `SELECT p.id_personne
          FROM personne p

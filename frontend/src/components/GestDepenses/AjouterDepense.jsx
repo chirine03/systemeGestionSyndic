@@ -197,7 +197,7 @@ const validateForm = () => {
                     setFormData({
                       ...formData,
                       id_service: value,
-                      montant: selectedService.montant || '', // ajuster selon nom réel du champ
+                      montant: selectedService.montant || '', 
                     });
                   } else {
                     setFormData({ ...formData, id_service: value, montant: '' });

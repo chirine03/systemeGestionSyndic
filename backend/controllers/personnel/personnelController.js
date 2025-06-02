@@ -1,12 +1,13 @@
-import {getAllPersonnel, addPersonnel, getInfosPersonnel, checkExisteInfos, updatePersonnel, deletePersonnel } from '../../models/personnel/personnelModel.js';
+import {getAllPersonnel, addPersonnel, getInfosPersonnel, checkExistInfos, checkAddExistInfos, updatePersonnel, deletePersonnel } from '../../models/personnel/personnelModel.js';
 
 
 export const ajouterPersonnel= async (req, res) => {
     const { nom, prenom, adresse, telephone, cin, date_nais, post, salaire } = req.body;
   
     try {
-      const existe = await checkExisteInfos(cin, telephone);
-  
+      console.log("Données reçues :", req.body);
+      const existe = await checkAddExistInfos(cin, telephone);
+
       if (existe) {
         return res.json({ success: false, message: "CIN ou téléphone déjà utilisé." });
       }
@@ -45,7 +46,7 @@ export const ajouterPersonnel= async (req, res) => {
             : res.json({ success: false, message: "Échec de la mise à jour." });
         }
     
-        const existe = await checkExisteInfos(cin, telephone, id_personne);
+        const existe = await checkExistInfos(cin, telephone, id_personne);
     
         if (existe) {
           return res.json({ success: false, message: "CIN ou téléphone déjà utilisé." });

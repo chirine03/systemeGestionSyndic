@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ajouterImmeuble } from '../../services/immeuble/immeubleService'; 
-import { Modal, Button } from 'react-bootstrap'; // Import des composants Modal et Button de react-bootstrap
 import ConfirmeModale from './ConfirmeModale';
 
 const AjouterImmeuble = () => {

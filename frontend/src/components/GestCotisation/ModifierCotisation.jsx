@@ -13,6 +13,9 @@ const ModifierCotisation = ({ show, handleClose, cotisation, onCotisationUpdated
   const [errors, setErrors] = useState({});
   const [appartements, setAppartements] = useState([]);
   const [annees, setAnnees] = useState([]);
+  const [isPeriodeEditable, setIsPeriodeEditable] = useState(false);
+  const [isMontantEditable, setIsMontantEditable] = useState(false);
+
 
   // Charger les infos des appartements et années
   useEffect(() => {
@@ -28,13 +31,22 @@ const ModifierCotisation = ({ show, handleClose, cotisation, onCotisationUpdated
     loadInfos();
   }, []);
 
-  // Met à jour formData quand cotisation change
+  
   useEffect(() => {
     setFormData({
       ...cotisation,
       date_payement: formatDate(cotisation.date_payement),
     });
   }, [cotisation]);
+
+  // Vérifier si la période doit être modifiable ou non
+  useEffect(() => {
+    // Si le numéro d'appartement ou l'année change, rendre la période modifiable
+    setIsPeriodeEditable(formData.num_appartement !== cotisation.num_appartement || formData.annee !== cotisation.annee);
+
+    setIsMontantEditable(formData.num_appartement !== cotisation.num_appartement || formData.annee !== cotisation.annee);
+
+  }, [formData.num_appartement, formData.annee, cotisation]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -130,6 +142,7 @@ const ModifierCotisation = ({ show, handleClose, cotisation, onCotisationUpdated
               value={formData.periode}
               onChange={handleChange}
               isInvalid={!!errors.periode}
+              disabled={!isPeriodeEditable}
             >
               <option value="">Choisir la période</option>
               <option value="1">1 Trimestre</option>
@@ -148,6 +161,7 @@ const ModifierCotisation = ({ show, handleClose, cotisation, onCotisationUpdated
               value={formData.montant}
               onChange={handleChange}
               isInvalid={!!errors.montant}
+              disabled={!isMontantEditable}
             />
             <Form.Control.Feedback type="invalid">{errors.montant}</Form.Control.Feedback>
           </Form.Group>

@@ -91,6 +91,7 @@ const AjouterPersonnel= ({ onSave }) => {
     setIsSubmitting(true);
     try {
       const result = await ajouterPersonnel(formData);
+      console.log("Résultat de l'ajout :", formData);
       if (result.success) {
         setApiMessage({ text: "Personnel ajouté avec succès !", type: "success" });
         if (onSave) onSave();
@@ -105,6 +106,9 @@ const AjouterPersonnel= ({ onSave }) => {
           salaire: "",
         });
         setErrors({});
+        setTimeout(() => {
+          setApiMessage("");
+        }, 1500);
       } else {
         setApiMessage({ text: result.message, type: "danger" });
       }
@@ -223,6 +227,7 @@ const AjouterPersonnel= ({ onSave }) => {
                 <option value="">-- Sélectionner un poste --</option>
                 <option value="gardien">Gardien</option>
                 <option value="femme de ménage">Femme de ménage</option>
+                <option value="TEST">TEST</option>
             </select>
             {errors.post && <div className="invalid-feedback">{errors.post}</div>}
         </div>

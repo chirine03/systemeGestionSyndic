@@ -26,14 +26,16 @@ const AppartementsList = ({ id_personne }) => {
               type_payement: curr.type_payement,
               date_payement: curr.date_payement,
               annee: curr.annee,
+              nom: curr.nom,
+              prenom: curr.prenom,
             });
           }
           return acc;
         }, {});
         setAppartements(Object.values(grouped));
-        setErrorMessage("");  // reset erreur si succès
+        setErrorMessage("");
       } else {
-        setErrorMessage(res.message); // afficher l'erreur dans l'interface
+        setErrorMessage(res.message);
       }
     };
 
@@ -53,7 +55,8 @@ const AppartementsList = ({ id_personne }) => {
     <div className="appart-container">
       <h2 className="appart-title">Mes Appartements</h2>
 
-      {/* Affichage du message d'erreur */}
+      <p className="appart-subtitle">Cliquez sur un appartement pour voir les détails des paiements.</p>
+      <hr style={{ marginBottom: "20px" }} />
       {errorMessage && (
         <div className="error-message" style={{ color: "red", marginBottom: "15px" }}>
           {errorMessage}

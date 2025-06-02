@@ -111,7 +111,6 @@ export const supprimerDepense = async (req, res) => {
 export const suiviDepenseGlobal = async (req, res) => {
   try {
     const depenses = await getSuiviDepenseGlobal();
-    console.log("Dépenses globales récupérées :", depenses);
 
     return res.json({ success: true, depenses });
   } catch (error) {
