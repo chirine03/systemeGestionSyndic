@@ -49,24 +49,35 @@ export const getRecetteActuelle = async () => {
 export const getTotalDepense = async () => {
   const [rows] = await connection.execute(`
     SELECT
-        (SELECT SUM(montant)
+    (
+        SELECT SUM(montant)
         FROM depense
-        WHERE YEAR(date_depense) = YEAR(CURRENT_DATE))
-        +
-        (SELECT SUM(montant)
+        WHERE YEAR(date_depense) = YEAR(CURRENT_DATE)
+    ) +
+    (
+        SELECT SUM(montant)
         FROM service
-        WHERE paye = 'non' AND YEAR(date_intervention) = YEAR(CURRENT_DATE))
-        AS total_depense,
+        WHERE paye = 'non' AND YEAR(date_intervention) = YEAR(CURRENT_DATE)
+    ) AS total_depense,
 
-        (SELECT SUM(montant)
+    (
+        SELECT SUM(montant)
         FROM service
-        WHERE paye = 'oui' AND YEAR(date_intervention) = YEAR(CURRENT_DATE))
-        AS total_paye,
+        WHERE paye = 'oui' AND YEAR(date_intervention) = YEAR(CURRENT_DATE)
+    ) +
+    (
+        SELECT SUM(montant)
+        FROM depense
+        WHERE YEAR(date_depense) = YEAR(CURRENT_DATE)
+        AND id_service IS NULL
+    ) AS total_paye,
 
-        (SELECT SUM(montant)
+    (
+        SELECT SUM(montant)
         FROM service
-        WHERE paye = 'non' AND YEAR(date_intervention) = YEAR(CURRENT_DATE))
-        AS total_non_paye;
+        WHERE paye = 'non' AND YEAR(date_intervention) = YEAR(CURRENT_DATE)
+    ) AS total_non_paye;
+
     `);
   return rows[0];
 };

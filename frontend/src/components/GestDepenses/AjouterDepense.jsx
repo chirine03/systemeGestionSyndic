@@ -29,8 +29,7 @@ const AjouterDepense = () => {
     'Maintenance',
     'Entretien courant',
     'Nettoyage', 
-    'Achat', 
-    'Salaires'];
+    'Achat'];
   const typesPaiement = ['Espèce', 'Virement', 'Versement', 'Chèque'];
 
   useEffect(() => {

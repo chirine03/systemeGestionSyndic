@@ -21,7 +21,7 @@ const TotalDepense = () => {
 
   return (
     <div className="card-stats">
-      <h5>Résumé Dépenses</h5>
+      <h5>Totale Dépenses</h5>
       <div className="d-flex align-items-start">
         <p className="stat-main">{totaux.total_depense} DT</p>
         <div>
